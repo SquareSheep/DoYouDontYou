@@ -1,0 +1,38 @@
+Animation consist primarily of Polys
+
+gridW, gridX,Y
+gridLoop
+Grid object? Determines what the occupying Poly does on next tick?
+Can have "source" grid positions where objects spawn and flow to the rest of the grid
+GridCube {
+	void next():
+		- Step, rotate, die, teleport, die, clone, stretch, pulse, flash, etc
+}
+
+Poly {
+	Step(x,y,z): Move x,y,z grid squares over
+	Rotate(x,y,z): Rotate ang x,y,z*PI/2
+	Spawn(): Creates spawn effects
+	Death(): Creates death effects
+}
+
+mobs used as an object pool
+
+Some kind of looping beat pattern
+- Step, rotate, pulse, spawn, die,
+
+1,1/2,1/4
+- Tick divides beat
+All Polys go next() for each beat,
+but this is divided by tick
+- E.g., 1/2: Half of Polys go next(), 
+then the other half on next tick
+- Distribution of Polys per tick determined by pattern
+	- E.g., case 0: Every other Poly, case 1: 0-1/2, 1/2-1, etc
+
+Two modes: Fixed and Free
+Fixed: All Polys snap to grid
+- Poly movement determined by their position
+
+Free: Polys can move freely
+- Borders either loop or despawn Polys
