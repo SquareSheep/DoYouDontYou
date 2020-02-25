@@ -47,7 +47,7 @@ class Poly extends PolyS {
   Poly() {}
 
   void update() {
-    updatePoints();
+    super.update();
     for (int i = 0 ; i < vert.length ; i ++) {
       vert[i].update();
     }

@@ -215,7 +215,6 @@ abstract class Mob extends Entity {
   Point rav = new Point(0,0,0);
   Point av = new Point(0,0,0);
   float w = 0;
-  int lifeSpan = -1;
   
   void setMass(float mass) {
     p.mass = mass;

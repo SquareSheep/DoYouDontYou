@@ -5,12 +5,29 @@ Snaps to grid, right angles, and has special animation functions
 float pi2 = PI/2;
 abstract class PolyS extends MobFL {
 
-	void pulse() {
-		
+	boolean alive = true;
+
+	void update() {
+		super.update();
+		if (!alive) {
+			if (sca.x < 0) {
+				finished = true;
+			}
+		}
 	}
 
-	void death() {
-		
+	void pulse(float amp) {
+		sca.v += amp;
+		ang.v.add(random(-amp,amp),random(-amp,amp),random(-amp,amp));
+	}
+
+	void pulse() {
+		pulse(1.5);
+	}
+
+	void die() {
+		sca.X = -1;
+		alive = false;
 	}
 
 	void addAng(float x, float y, float z) {

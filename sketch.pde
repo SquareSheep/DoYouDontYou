@@ -48,6 +48,14 @@ void render() {
 					switch ((int)random(1)) {
 						case 0:
 						mob.addAng((int)random(-2,3), (int)random(-2,3), (int)random(-2,3));
+						break;
+					}
+
+					if (random(1) < 0.15) {
+						mob.pulse();
+					}
+					if (random(1) < 0.1) {
+						mob.die();
 					}
 				}
 			}
