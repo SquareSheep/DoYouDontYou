@@ -24,11 +24,11 @@ Poly newPoly(float type, float x, float y, float z, float ax, float ay, float az
 class Poly extends PolyS {
   Point[] vert;
   int[][] faces;
-  float w;
 
   Poly(float x, float y, float z, float ax, float ay, float az, float w, float[] vert, int[][] faces) {
     this.p = new Point(x,y,z);
     this.ang = new Point(ax,ay,az);
+    this.gw = w*2;
     this.w = w;
     this.vert = new Point[vert.length/3];
     this.faces = faces;
@@ -50,10 +50,6 @@ class Poly extends PolyS {
     super.update();
     for (int i = 0 ; i < vert.length ; i ++) {
       vert[i].update();
-    }
-    for (int i = 0 ; i < faces.length ; i ++) {
-      fillStyle[i].update();
-      strokeStyle[i].update();
     }
   }
 

@@ -1,3 +1,6 @@
+/*
+Fundamental base classes
+*/
 class Event {
   boolean finished = false;
   boolean ending = false;
@@ -85,90 +88,11 @@ abstract class MobFL extends Mob {
   IColor[] fillStyle;
   IColor[] strokeStyle;
 
-  void fillStyleSet(boolean which, float rc, float gc, float bc, float ac, float rcr, float gcr, float bcr, float acr, 
-    float rm, float gm, float bm, float am, float rmr, float gmr, float bmr, float amr, float index) {
-    float t; IColor[] colorStyle;
-    if (which) {
-      colorStyle = fillStyle;
-    } else {
-      colorStyle = strokeStyle;
-    }
-    for (int i = 0 ; i < colorStyle.length ; i ++) {
-      t = (float)i/colorStyle.length-0.5;
-      colorStyle[i].set(rc+rcr*t,gc+gcr*t,bc+bcr*t,ac+acr*t,rm+rmr*t,gm+gmr*t,bm+bmr*t,am+amr*t,index);
-    }
-  }
-
-  void fillStyleSet(boolean which, float rc, float gc, float bc, float ac, float rm, float gm, float bm, float am, float index) {
-    float t; IColor[] colorStyle;
-    if (which) {
-      colorStyle = fillStyle;
-    } else {
-      colorStyle = strokeStyle;
-    }
-    for (int i = 0 ; i < colorStyle.length ; i ++) {
-      t = (float)i/colorStyle.length-0.5;
-      colorStyle[i].set(rc,gc,bc,ac,rm,gm,bm,am,index);
-    }
-  }
-
-  void fillStyleSetC(boolean which, float rc, float gc, float bc, float ac, float rcr, float gcr, float bcr, float acr) {
-    float t; IColor[] colorStyle;
-    if (which) {
-      colorStyle = fillStyle;
-    } else {
-      colorStyle = strokeStyle;
-    }
-    for (int i = 0 ; i < colorStyle.length ; i ++) {
-      t = (float)i/colorStyle.length-0.5;
-      colorStyle[i].setC(rc+rcr*t,gc+gcr*t,bc+bcr*t,ac+acr*t);
-    }
-  }
-
-  void fillStyleSetC(boolean which, float r, float g, float b, float a, float index) {
-    float t; IColor[] colorStyle;
-    if (which) {
-      colorStyle = fillStyle;
-    } else {
-      colorStyle = strokeStyle;
-    }
-    for (int i = 0 ; i < colorStyle.length ; i ++) colorStyle[i].setC(r,g,b,a);
-  }
-
-  void fillStyleSetM(boolean which, float rm, float gm, float bm, float am, float rmr, float gmr, float bmr, float amr, float index) {
-    float t; IColor[] colorStyle;
-    if (which) {
-      colorStyle = fillStyle;
-    } else {
-      colorStyle = strokeStyle;
-    }
-    for (int i = 0 ; i < colorStyle.length ; i ++) {
-      t = (float)i/colorStyle.length-0.5;
-      colorStyle[i].setM(rm+rmr*t,gm+gmr*t,bm+bmr*t,am+amr*t,index);
-    }
-  }
-
-  void fillStyleSetM(boolean which, float r, float g, float b, float a, float index) {
-    float t; IColor[] colorStyle;
-    if (which) {
-      colorStyle = fillStyle;
-    } else {
-      colorStyle = strokeStyle;
-    }
-    for (int i = 0 ; i < colorStyle.length ; i ++) colorStyle[i].setC(r,g,b,a);
-  }
-  
-  void fillStyleSetMass(float mass) {
+  void update() {
+    super.update();
     for (int i = 0 ; i < fillStyle.length ; i ++) {
-      fillStyle[i].setMass(mass);
-      strokeStyle[i].setMass(mass);
-    }
-  }
-
-  void fillStyleSetVMult(float vMult) {
-    for (int i = 0 ; i < fillStyle.length ; i ++) {
-      fillStyle[i].setVMult(vMult);
-      strokeStyle[i].setVMult(vMult);
+      fillStyle[i].update();
+      strokeStyle[i].update();
     }
   }
 }
@@ -177,8 +101,8 @@ abstract class MobF extends Mob {
   IColor fillStyle = defaultFill.copy();
   IColor strokeStyle = defaultStroke.copy();
 
-  void updatePoints() {
-    super.updatePoints();
+  void update() {
+    super.update();
     fillStyle.update();
     strokeStyle.update();
   }
@@ -227,7 +151,7 @@ abstract class Mob extends Entity {
     rav.mass = mass;
   }
 
-  void updatePoints() {
+  void update() {
     p.P.add(pv.p);
     ang.P.add(av.p);
     p.update();
@@ -252,10 +176,6 @@ abstract class Mob extends Entity {
     rotateY(ang.p.y);
     rotateZ(ang.p.z);
     if (sca.x != 1) scale(sca.x);
-  }
-
-  void update() {
-    updatePoints();
   }
 
   abstract void render();
