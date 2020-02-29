@@ -69,12 +69,16 @@ class PolySBox extends Mob {
 	}
 
 	void render() {
+		sca.x = 1+avg*0.001;
+
 		setDraw();
 		for (Poly mob : ar) {
 			mob.render();
 		}
 		noFill();
-		stroke(255);
+
+		stroke(avg*10);
+
 		box(w.p.x*2+gw,w.p.y*2+gw,w.p.z*2+gw);
 		pop();
 	}
