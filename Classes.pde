@@ -1,6 +1,3 @@
-/*
-Fundamental base classes
-*/
 class Event {
   boolean finished = false;
   boolean ending = false;
@@ -224,9 +221,9 @@ class Point {
   void update() {
     v.mult(vMult);
     if (index != -1) {
-      v.x += (P.x + pm.x * av[index] - p.x) / mass;
-      v.y += (P.y + pm.y * av[index] - p.y) / mass;
-      v.z += (P.z + pm.z * av[index] - p.z) / mass;
+      v.x += (P.x + pm.x * af[index] - p.x) / mass;
+      v.y += (P.y + pm.y * af[index] - p.y) / mass;
+      v.z += (P.z + pm.z * af[index] - p.z) / mass;
     } else {
       v.add(PVector.sub(P,p).div(mass));
     }
@@ -314,7 +311,7 @@ class SpringValue {
   void update() {
     v *= vMult;
     if (index != -1) {
-      v += (X + xm*av[index] - x)/mass;
+      v += (X + xm*af[index] - x)/mass;
     } else {
       v += (X - x)/mass;
     }
@@ -337,6 +334,11 @@ class SpringValue {
   void reset(float x, float X) {
     this.x = x;
     this.X = x;
+    this.v = 0;
+  }
+
+  void reset(float x) {
+    this.x = x; this.X = x;
     this.v = 0;
   }
 }
@@ -383,10 +385,10 @@ class IColor extends AColor {
 
   void update() {
     if (index != -1) {
-      r.X = rm * av[index] + rc;
-      g.X = gm * av[index] + gc;
-      b.X = bm * av[index] + bc;
-      a.X = am * av[index] + ac;
+      r.X = rm * af[index] + rc;
+      g.X = gm * af[index] + gc;
+      b.X = bm * af[index] + bc;
+      a.X = am * af[index] + ac;
     }
     r.update();
     g.update();
@@ -439,6 +441,11 @@ class IColor extends AColor {
 
   void reset(float rc, float gc, float bc, float ac, float rm, float gm, float bm, float am, float index) {
     set(rc,gc,bc,ac,rm,gm,bm,am,index);
+    r.x = rc; g.x = gc; b.x = bc; a.x = ac;
+  }
+
+  void reset(float rc, float gc, float bc, float ac) {
+    setC(rc,gc,bc,ac);
     r.x = rc; g.x = gc; b.x = bc; a.x = ac;
   }
 

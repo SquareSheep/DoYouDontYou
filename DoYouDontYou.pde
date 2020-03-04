@@ -4,7 +4,7 @@ import ddf.minim.*;
 Minim mim;
 AudioPlayer song;
 ddf.minim.analysis.FFT fft;
-float[] av = new float[binCount];
+float[] af = new float[binCount];
 float max;
 float avg;
 
@@ -145,25 +145,25 @@ void calcFFT() {
   avg = 0;
   max = 0;
   float temp;
-  for (int i = 0 ; i < av.length ; i ++) {
+  for (int i = 0 ; i < af.length ; i ++) {
     temp = 0;
     for (int k = i ; k < fft.specSize() ; k += i + 1) {
       temp += fft.getBand(k);
     }
-    temp /= av.length / (i + 1);
+    temp /= af.length / (i + 1);
     temp = pow(temp,fftPow);
     avg += temp;
-    av[i] = temp;
+    af[i] = temp;
   }
-  avg /= av.length;
+  avg /= af.length;
 
-  for (int i = 0 ; i < av.length ; i ++) {
-    if (av[i] < avg*fftThreshold) {
-      av[i] /= fftAmp;
+  for (int i = 0 ; i < af.length ; i ++) {
+    if (af[i] < avg*fftThreshold) {
+      af[i] /= fftAmp;
     } else {
-      av[i] += (av[i] - avg * fftThreshold) /fftAmp;
+      af[i] += (af[i] - avg * fftThreshold) /fftAmp;
     }
-    if (av[i] > max) max = av[i];
+    if (af[i] > max) max = af[i];
   }
 }
 
@@ -229,7 +229,7 @@ void drawPitches() {
   for (int i = 0 ; i < binCount ; i ++) {
     float w = width/(float)binCount;
     translate(w, 0,0);
-    rect(0,0,w,av[i]*10);
+    rect(0,0,w,af[i]*10);
   }
   pop();
 }
