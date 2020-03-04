@@ -3,15 +3,45 @@ Snap-to-grid Poly
 Custom class for Do You Don't You
 Snaps to grid, right angles, and has special animation functions
 */
+PolyS newPolyS(float type, float x, float y, float z, float ax, float ay, float az, float w) {
+  PolyS poly;
+  switch ((int)type) {
+    case 0: // Pyramid
+    poly = new PolyS(x,y,z, ax,ay,az, w, new float[]{-1,-1,-1, 1,-1,-1, 1,1,-1, -1,1,-1, 0,0,1},
+    new int[][]{new int[]{0,1,2,3}, new int[]{0,1,4}, new int[]{1,2,4}, new int[]{2,3,4}, new int[]{3,0,4}});
+    break;
+    case 1: // Box
+    poly = new PolyS(x,y,z, ax,ay,az, w, new float[]{-1,-1,-1, 1,-1,-1, 1,1,-1, -1,1,-1, -1,-1,1, 1,-1,1, 1,1,1, -1,1,1},
+    new int[][]{new int[]{0,1,2,3}, new int[]{0,1,5,4}, new int[]{1,2,6,5}, new int[]{2,3,7,6}, new int[]{3,0,4,7}, new int[]{4,5,6,7}});
+    break;
+    case 2: // Crystal
+    poly = new PolyS(x,y,z, ax,ay,az, w, new float[]{-1,-1,-1, 1,-1,-1, 1,1,-1, -1,1,-1, -1,-1,1, 1,-1,1, 1,1,1, -1,1,1, 0,2.5,0, 0,-2.5,0},
+      new int[][]{new int[]{0,1,2,3}, new int[]{0,1,5,4}, new int[]{1,2,6,5}, new int[]{2,3,7,6}, new int[]{3,0,4,7}, new int[]{4,5,6,7},
+      new int[]{9,0,1}, new int[]{9,1,5}, new int[]{9,4,5}, new int[]{9,4,0}}); //0,1,4,5
+    break;
+    default:
+    poly = new PolyS();
+    break;
+  }
+  return poly;
+}
+
 float pi2 = PI/2;
-abstract class PolyS extends MobFL {
+class PolyS extends Poly {
 	float gw;
 	boolean alive = true;
+
+	PolyS(float x, float y, float z, float ax, float ay, float az, float w, float[] vert, int[][] faces) {
+		super(x,y,z,ax,ay,az,w,vert,faces);
+		this.gw = w*2;
+	}
+
+	PolyS() {}
 
 	void update() {
 		super.update();
 		if (!alive) {
-			if (sca.x < 0) {
+			if (sca.x <= 0.03) {
 				finished = true;
 			}
 		}
@@ -22,12 +52,8 @@ abstract class PolyS extends MobFL {
 		ang.v.add(random(-amp,amp),random(-amp,amp),random(-amp,amp));
 	}
 
-	void pulse() {
-		pulse(1.5);
-	}
-
 	void die() {
-		sca.X = -1;
+		sca.X = 0;
 		alive = false;
 	}
 

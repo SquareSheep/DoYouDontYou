@@ -288,19 +288,27 @@ class SpringValue {
   float mass;
   int index = -1;
 
-  SpringValue(float x, float vMult, float mass) {
+  SpringValue(float x, float X, float vMult, float mass) {
     this.x = x;
     this.X = x;
     this.vMult = vMult;
     this.mass = mass;
   }
 
+  SpringValue(float x, float vMult, float mass) {
+    this(x,x,vMult,mass);
+  }
+
+  SpringValue(float x, float X) {
+    this(x,X,defaultVMult,defaultMass);
+  }
+
   SpringValue(float x) {
-    this(x, defaultVMult, defaultMass);
+    this(x,x,defaultVMult, defaultMass);
   }
 
   SpringValue() {
-    this(1,defaultVMult, defaultMass);
+    this(1,1,defaultVMult, defaultMass);
   }
 
   void update() {
@@ -316,6 +324,12 @@ class SpringValue {
   void setM(float xm, float index) {
     this.xm = xm;
     this.index = (int)index;
+  }
+
+  void reset(float x, float X) {
+    this.x = x;
+    this.X = x;
+    this.v = 0;
   }
 }
 

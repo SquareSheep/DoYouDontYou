@@ -21,14 +21,13 @@ Poly newPoly(float type, float x, float y, float z, float ax, float ay, float az
   return poly;
 }
 
-class Poly extends PolyS {
+class Poly extends MobFL {
   Point[] vert;
   int[][] faces;
 
   Poly(float x, float y, float z, float ax, float ay, float az, float w, float[] vert, int[][] faces) {
     this.p = new Point(x,y,z);
     this.ang = new Point(ax,ay,az);
-    this.gw = w*2;
     this.w = w;
     this.vert = new Point[vert.length/3];
     this.faces = faces;

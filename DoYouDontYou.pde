@@ -33,6 +33,8 @@ char keyR;
 char keyP;
 boolean beatQ = false;
 
+float temp, x,y,z, w,d, tick, r,g,b,a, i,j,k,o, amp,wAmp,aAmp,vAmp,fAmp;
+
 void setup() {
   size(1100,1100,P3D);
   de = (int)(width*0.5+height*0.5);
@@ -62,6 +64,7 @@ void setup() {
 }
 
 void draw() {
+  if (timer.beat) println(song.position() + " " + (int)(currBeat+1));
   background(0);
   cam.render();
   update();
