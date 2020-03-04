@@ -32,7 +32,7 @@ int randomD() {
 	return -1;
 }
 
-void IColorSet(IColor[] fillStyle, float rc, float gc, float bc, float ac, float rcr, float gcr, float bcr, float acr, 
+void fillStyleSet(IColor[] fillStyle, float rc, float gc, float bc, float ac, float rcr, float gcr, float bcr, float acr, 
 	float rm, float gm, float bm, float am, float rmr, float gmr, float bmr, float amr, float index) {
 	float t;
 	for (int i = 0 ; i < fillStyle.length ; i ++) {
@@ -41,11 +41,11 @@ void IColorSet(IColor[] fillStyle, float rc, float gc, float bc, float ac, float
 	}
 }
 
-void IColorSet(IColor[] fillStyle, float rc, float gc, float bc, float ac, float rm, float gm, float bm, float am, float index) {
+void fillStyleSet(IColor[] fillStyle, float rc, float gc, float bc, float ac, float rm, float gm, float bm, float am, float index) {
 	for (int i = 0 ; i < fillStyle.length ; i ++) fillStyle[i].set(rc,gc,bc,ac,rm,gm,bm,am,index);
 }
 
-void IColorSetC(IColor[] fillStyle, float r, float g, float b, float a, float rr, float gr, float br, float ar) {
+void fillStyleSetC(IColor[] fillStyle, float r, float g, float b, float a, float rr, float gr, float br, float ar) {
 	float t;
 	for (int i = 0 ; i < fillStyle.length ; i ++) {
 		t = (float)i/fillStyle.length-0.5;
@@ -53,11 +53,11 @@ void IColorSetC(IColor[] fillStyle, float r, float g, float b, float a, float rr
 	}
 }
 
-void IColorSetC(IColor[] fillStyle, float r, float g, float b, float a) {
+void fillStyleSetC(IColor[] fillStyle, float r, float g, float b, float a) {
 	for (int i = 0 ; i < fillStyle.length ; i ++) fillStyle[i].setC(r,g,b,a);
 }
 
-void IColorSetM(IColor[] fillStyle, float r, float g, float b, float a, float rr, float gr, float br, float ar) {
+void fillStyleSetM(IColor[] fillStyle, float r, float g, float b, float a, float rr, float gr, float br, float ar) {
 	float t;
 	for (int i = 0 ; i < fillStyle.length ; i ++) {
 		t = (float)i/fillStyle.length-0.5;
@@ -65,14 +65,14 @@ void IColorSetM(IColor[] fillStyle, float r, float g, float b, float a, float rr
 	}
 }
 
-void IColorSetM(IColor[] fillStyle, float r, float g, float b, float a, float index) {
+void fillStyleSetM(IColor[] fillStyle, float r, float g, float b, float a, float index) {
 	for (int i = 0 ; i < fillStyle.length ; i ++) fillStyle[i].setM(r,g,b,a,index);
 }
 
-void IColorSetMass(IColor[] fillStyle, float mass) {
+void fillStyleSetMass(IColor[] fillStyle, float mass) {
 	for (int i = 0 ; i < fillStyle.length ; i ++) fillStyle[i].setMass(mass);
 }
 
-void IColorSetVMult(IColor[] fillStyle, float vMult) {
+void fillStyleSetVMult(IColor[] fillStyle, float vMult) {
 	for (int i = 0 ; i < fillStyle.length ; i ++) fillStyle[i].setVMult(vMult);
 }

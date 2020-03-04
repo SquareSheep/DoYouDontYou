@@ -30,6 +30,7 @@ float pi2 = PI/2;
 class PolyS extends Poly {
 	float gw;
 	boolean alive = true;
+	PolySBox parent;
 
 	PolyS(float x, float y, float z, float ax, float ay, float az, float w, float[] vert, int[][] faces) {
 		super(x,y,z,ax,ay,az,w,vert,faces);
@@ -55,6 +56,7 @@ class PolyS extends Poly {
 	void die() {
 		sca.X = 0;
 		alive = false;
+		parent.rings.add(0,this,w*3, 0.5);
 	}
 
 	void addAng(float x, float y, float z) {

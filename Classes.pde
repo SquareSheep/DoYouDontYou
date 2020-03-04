@@ -326,6 +326,14 @@ class SpringValue {
     this.index = (int)index;
   }
 
+  void reset(float x, float X, float vMult, float mass) {
+    this.x = x;
+    this.X = x;
+    this.v = 0;
+    this.vMult = vMult;
+    this.mass = mass;
+  }
+
   void reset(float x, float X) {
     this.x = x;
     this.X = x;

@@ -33,7 +33,7 @@ char keyR;
 char keyP;
 boolean beatQ = false;
 
-float temp, x,y,z, w,d, tick, r,g,b,a, i,j,k,o, amp,wAmp,aAmp,vAmp,fAmp;
+float temp, x,y,z, w,d, tick, r,g,b,a, i,j,k,o,t, amp,wAmp,aAmp,vAmp,fAmp,sAmp;
 
 void setup() {
   size(1100,1100,P3D);

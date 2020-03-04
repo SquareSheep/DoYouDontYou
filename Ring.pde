@@ -1,38 +1,43 @@
+float ringWMass = 25;
+float ringWVMult = 0.6;
+float ringWThreshold = 0.9;
 class Ring extends Entity {
-	Point p;
-	SpringValue w;
+	Point p = new Point();
+	SpringValue w = new SpringValue(0, ringWVMult, ringWMass);
 	float wMax;
 	float amp;
-	IColor fillStyle = new IColor();
-	IColor strokeStyle = new IColor();
+	IColor fillStyle = new IColor(255,255,255,255);
 	int type = 0;
 
 	Ring(int type, float x, float y, float z, float w, float wMax, float amp) {
-		this.p = new Point(x,y,z);
-		this.w = new SpringValue(w,wMax);
+		this.p.reset(x,y,z);
+		this.w.reset(w,wMax, ringWVMult,ringWMass);
 		this.wMax = wMax;
 		this.amp = amp;
 		this.type = type;
 	}
 
-	Ring() {
-		p = new Point();
-		w = new SpringValue();
-	}
+	Ring() {}
 
 	void update() {
 		p.update();
 		w.update();
 		fillStyle.update();
-		strokeStyle.update();
-		if (w.x >= wMax) finished = true;
+		if (w.x >= wMax*ringWThreshold) finished = true;
 	}
 
 	void render() {
 		push();
-		strokeStyle.strokeStyle();
-		fillStyle.fillStyle();
-		rect(0,0,w.x,w.x);
+		translate(p.p.x,p.p.y,p.p.z);
+		switch(type) {
+			case 0:
+			fillStyle.strokeStyle();
+			noFill();
+			strokeWeight((wMax*ringWThreshold-w.x)*amp);
+			rect(0,0,w.x,w.x);
+			break;
+		}
+		
 		pop();
 	}
 }
@@ -41,22 +46,31 @@ class RingPool extends ObjectPool<Ring> {
 
 	void set(Ring mob, int type, float x, float y, float z, float w, float wMax, float amp) {
 		mob.p.reset(x,y,z);
-		mob.w.reset(w,wMax);
+		mob.w.x = w;
+		mob.w.X = wMax;
+		mob.w.v = 0;
 		mob.wMax = wMax;
 		mob.amp = amp;
 		mob.type = type;
+		mob.finished = false;
 	}
 
-	void add(int type, float x, float y, float z, float w, float wMax, float amp) {
+	void add(int type, PolyS parent, float x, float y, float z, float w, float wMax, float amp) {
 		if (arm == ar.size()) {
 			ar.add(new Ring());
 		}
 		Ring mob = ar.get(arm);
 		set(mob,type,x,y,z,w,wMax,amp);
+		mob.fillStyle.reset(parent.fillStyle[0]);
 		arm ++;
+		println(arm);
 	}
 
-	void add(int type, PolyS parent, float amp) {
-		add(type, parent.p.p.x,parent.p.p.y,parent.p.p.z,parent.w,parent.w*2,amp);
+	void add(int type, PolyS parent, float w, float wMax, float amp) {
+		add(type, parent, parent.p.p.x,parent.p.p.y,parent.p.p.z, w,wMax,amp);
+	}
+
+	void add(int type, PolyS parent, float wMax, float amp) {
+		add(type, parent, parent.p.p.x,parent.p.p.y,parent.p.p.z, parent.w,wMax,amp);
 	}
 }

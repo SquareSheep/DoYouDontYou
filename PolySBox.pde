@@ -5,6 +5,7 @@ Checks boundaries
 */
 class PolySBox extends Mob {
 	ArrayList<PolyS> ar = new ArrayList<PolyS>();
+	RingPool rings = new RingPool();
 	Point w;
 	PVector g;
 	float gw;
@@ -24,6 +25,7 @@ class PolySBox extends Mob {
 		y = (int)min(max(y,-g.y),g.y);
 		z = (int)min(max(z,-g.z),g.z);
 		ar.add(newPolyS(type,gw*x,gw*y,gw*z,ax*PI/2,ay*PI/2,az*PI/2,gw/2));
+		ar.get(ar.size()-1).parent = this;
 	}
 
 	void setW(float x, float y, float z) {
@@ -32,6 +34,7 @@ class PolySBox extends Mob {
 
 	void update() {
 		super.update();
+		rings.update();
 		w.update();
 		g.set(w.p.x/gw,w.p.y/gw,w.p.z/gw);
 		for (PolyS mob : ar) {
@@ -72,6 +75,7 @@ class PolySBox extends Mob {
 
 	void render() {
 		setDraw();
+		rings.render();
 		for (PolyS mob : ar) {
 			mob.render();
 		}

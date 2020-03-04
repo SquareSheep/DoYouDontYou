@@ -10,7 +10,7 @@ static float fillVMult = 0.25;
 static float fftThreshold = 1.7;
 static float fftPow = 2;
 static float fftAmp = 5;
-static float volumeGain = -33;
+static float volumeGain = -9;
 static String songName = "../Music/doyoudontyou.mp3";
 
 IColor defaultFill = new IColor(0,0,0,255);
@@ -44,30 +44,41 @@ Rings can have different shapes:
 float gw;
 float gx = 4; float gy = 7; float gz = 4;
 
-RingPool rings = new RingPool();
 
 void render() {
-	rings.update();
-	rings.render();
 
-	cam.ang.P.add(0.001,-0.003,-0.001);
+	//cam.ang.P.add(0.001,-0.003,-0.001);
 	if (beatQ) {
 		PolySBox box = (PolySBox)mobs.get(0);
 
 		if (currBeat % 0.5 == 0) {
-			for (int i = 0 ; i < random(box.g.x*box.g.y)*30 ; i ++) {
-				box.add(1, random(-10,10),random(-10,10),-box.g.z,0,0,0);
+			for (int i = 0 ; i < random(box.g.x*box.g.y)*10 ; i ++) {
+				box.add(random(3), random(-box.g.x,box.g.x),random(-box.g.y,box.g.y),-box.g.z,0,0,0);
 			}
 
 			for (int i = 0 ; i < box.ar.size() ; i ++) {
 				PolyS mob = box.ar.get(i);
-				if (mob.p.p.y < -gy*gw) {
-					mob.finished = true;
+				if (mob.p.p.z >= box.w.p.z-box.gw || random(1) < 0.1) {
+					mob.die();
 				} else {
 					mob.addAng((int)random(-2,3), (int)random(-2,3), (int)random(-2,3));
 					mob.addP(0,0,1);
-					if (random(1) < 0.2) mob.die();
 				}
+
+				t = (float)frameCount/100;
+				x = mob.p.p.x/box.w.p.x*6;
+				y = mob.p.p.y/box.w.p.y*6;
+				z = mob.p.p.z/box.w.p.z*6;
+
+				r = noise(x,t)*175;
+				g = noise(y,t)*175;
+				b = noise(z,t)*175;
+				sAmp = 0.018;
+				fillStyleSet(mob.fillStyle, r,g,b,175, 
+					r*sAmp,g*sAmp,b*sAmp,1, ((float)i/box.ar.size()*binCount)%binCount);
+
+				fillStyleSet(mob.strokeStyle, 0,0,0,0, 
+					r*sAmp,g*sAmp,b*sAmp,4, mob.fillStyle[0].index);
 			}
 		}
 	}
@@ -78,6 +89,6 @@ void setSketch() {
 	back = new PVector(-de*2,-de,-de*2);
 	strokeWeight(3);
 
-	gw = de*0.1;
-	mobs.add(new PolySBox(0,0,0,10,10,25,gw));
+	gw = de*0.16;
+	mobs.add(new PolySBox(0,0,0,5,5,10,gw));
 }
