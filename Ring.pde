@@ -36,8 +36,18 @@ class Ring extends Entity {
 			strokeWeight((wMax*ringWThreshold-w.x)*amp);
 			rect(0,0,w.x,w.x);
 			break;
+			case 1:
+			fillStyle.fillStyle();
+			noStroke();
+			rect(0,0,wMax-w.x,wMax-w.x);
+			break;
+			case 2:
+			fillStyle.fillStyle();
+			noStroke();
+			rect(0,-w.x,wMax,wMax-w.x);
+			rect(0,w.x,wMax,wMax-w.x);
+			break;
 		}
-		
 		pop();
 	}
 }
@@ -63,14 +73,17 @@ class RingPool extends ObjectPool<Ring> {
 		set(mob,type,x,y,z,w,wMax,amp);
 		mob.fillStyle.reset(parent.fillStyle[0]);
 		arm ++;
-		println(arm);
 	}
 
 	void add(int type, PolyS parent, float w, float wMax, float amp) {
 		add(type, parent, parent.p.p.x,parent.p.p.y,parent.p.p.z, w,wMax,amp);
 	}
 
-	void add(int type, PolyS parent, float wMax, float amp) {
-		add(type, parent, parent.p.p.x,parent.p.p.y,parent.p.p.z, parent.w,wMax,amp);
+	void add(int type, PolyS parent, float w, float wMax) {
+		add(type, parent, parent.p.p.x,parent.p.p.y,parent.p.p.z, w, wMax, 0.5);
+	}
+
+	void add(int type, PolyS parent, float wMax) {
+		add(type, parent, parent.p.p.x,parent.p.p.y,parent.p.p.z, parent.w, wMax, 0.5);
 	}
 }

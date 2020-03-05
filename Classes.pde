@@ -93,19 +93,28 @@ abstract class MobFL extends Mob {
     }
   }
 
-  void setMass(float mass) {
-    super.setMass(mass);
+  void fillStyleSet(float rc, float gc, float bc, float ac, float rcr, float gcr, float bcr, float acr, 
+    float rm, float gm, float bm, float am, float rmr, float gmr, float bmr, float amr, float index) {
+    fillStyleSet(rc,gc,bc,ac,rcr,gcr,bcr,acr,rm,gm,bm,am,rmr,gmr,bmr,amr);
     for (int i = 0 ; i < fillStyle.length ; i ++) {
-      fillStyle[i].setMass(mass);
-      strokeStyle[i].setMass(mass);
+      fillStyle[i].index = (int)(index + i)%binCount;
+      strokeStyle[i].index = (int)(index + i)%binCount;
     }
   }
 
-  void setVMult(float vMult) {
-    super.setVMult(vMult);
+  void fillStyleSet(float rc, float gc, float bc, float ac, float rcr, float gcr, float bcr, float acr, 
+    float rm, float gm, float bm, float am, float rmr, float gmr, float bmr, float amr) {
+    float t;
     for (int i = 0 ; i < fillStyle.length ; i ++) {
-      fillStyle[i].setVMult(vMult);
-      strokeStyle[i].setVMult(vMult);
+      t = (float)i/fillStyle.length;
+      fillStyle[i].set(rc+rcr*t, gc+gcr*t, bc+bcr*t, ac+acr*t, rm+rmr*t, gm+gmr*t, bm+bmr*t, am+amr*t);
+    }
+  }
+
+  void fillStyleIndex(float index) {
+    for (int i = 0 ; i < fillStyle.length ; i ++) {
+      fillStyle[i].index = (int)(index + i)%binCount;
+      strokeStyle[i].index = (int)(index + i)%binCount;
     }
   }
 }

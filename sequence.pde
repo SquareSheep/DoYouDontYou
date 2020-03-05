@@ -1,53 +1,76 @@
-/*
-6-9
-13-17
-22-24
+/* 
+201 Intro section:
+203-207 Do you hear what I hear
+211-215 Do you care if I care
+219-223 Do you know what I know
+227-231 Do you know what we share
 
-6-9 Boop
-13.5-17 Guitar
-22-24 Boop
-29.5-33 ...
-38-41
-45.5-49
-54-57
-61.5-64
+235-239 Do you hear what I hear
+243-247 ...
+251-255
+259-263
 
+267 Bridge:
+"Whemm" sounds
+270 274 278 282 286 290 294
 
-0-33
-32 snarekick starts
-49 fart bass
-65 lyric part starts
-72,73
+297 Melody section
 
-80,81
-88,89
-96,97
-104,105
-112,113
-114-"do you know..."
-120,121
-129,137
-138 Wub wub bass part
-144.5-145 Don't you
-160.5-161 Don't you
-169 -on't you
-184.5-185 Dont
-197- Quiet stab
-
-169 Wub wub part 2
 */
-
 void addEvents() {
 
+}
+
+void instantEvents() {
+	// Intro section
+	if (beatInRange(201,263) && (currBeatQ == 0.5 || currBeatQ == 0)) {
+		if (currBeatQ == 0.5) box.setW(7,7,7);
+		if (currBeatQ == 0) box.setW(4,4,4);
+
+		if (beatInRange(203,207) || beatInRange(211,215) || beatInRange(219,223) || beatInRange(227,231)
+			|| beatInRange(235,239) || beatInRange(243,247) || beatInRange(251,255) || beatInRange(259,263)) {
+			for (int i = -(int)box.g.x ; i < box.g.x ; i ++) {
+				i ++;
+				for (int k = -(int)box.g.y ; k < box.g.y ; k ++) {
+					box.add(randomI(new int[]{0,2}),i,k,-box.g.z);
+					k ++;
+				}
+			}
+		}
+		if (beatInRange(203,211) || beatInRange(235,243)) for (PolyS mob : ar) {
+			mob.addP(abs(mob.gety()%2),abs(mob.getz())%2,1);
+			mob.addAng(abs(mob.gety()%2),abs(mob.getz())%2,0);
+
+		} else if (beatInRange(211,219) || beatInRange(243,251)) for (PolyS mob : ar) {
+			mob.addP(abs(mob.gety()%2),-abs(mob.getz())%2,1);
+			mob.addAng(abs(mob.gety()%2),abs(mob.getz())%2,0);
+
+		} else if (beatInRange(219,227) || beatInRange(251,259)) for (PolyS mob : ar) {
+			mob.addP(-abs(mob.gety()%2),-abs(mob.getz())%2,1);
+			mob.addAng(abs(mob.gety()%2),abs(mob.getz())%2,0);
+
+		} else if (beatInRange(227,235) || beatInRange(259,267)) for (PolyS mob : ar) {
+			mob.addP(-abs(mob.gety()%2),abs(mob.getz())%2,1);
+			mob.addAng(abs(mob.gety()%2),abs(mob.getz())%2,0);
+		}
+
+		box.arFillStyleSet(55,55,55,255, 100,100,100,0, 1,1,1,0, 1,1,1,0);
+		for (PolyS mob : ar) {
+			if (mob.steps > 9) mob.die();
+		}
+	}
+	switch((int)(currBeat*4)) {
+		//case 192:
+	}
 }
 
 void keyboardInput() {
 	switch(key) {
 		case '1':
-		setTime(0,0);
+		setTime(99195,191);
 		break;
 		case '2':
-		setTime(0,0);
+		setTime(138321,266);
 		break;
 		case '3':
 		setTime(0,0);
@@ -62,4 +85,8 @@ void keyboardInput() {
 		setTime(0,0);
 		break;
 	}
+}
+
+boolean beatInRange(int minBeat, int maxBeat) {
+	return currBeat >= minBeat && currBeat < maxBeat;
 }

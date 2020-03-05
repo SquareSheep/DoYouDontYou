@@ -1,38 +1,38 @@
-Animation consist primarily of Polys
+/*
+6-9
+13-17
+22-24
 
-gridW, gridX,Y
-gridLoop
-Grid object? Determines what the occupying Poly does on next tick?
-Can have "source" grid positions where objects spawn and flow to the rest of the grid
-GridCube {
-	void next():
-		- Step, rotate, die, teleport, die, clone, stretch, pulse, flash, etc
-}
+6-9 Boop
+13.5-17 Guitar
+22-24 Boop
+29.5-33 ...
+38-41
+45.5-49
+54-57
+61.5-64
 
-Poly {
-	Step(x,y,z): Move x,y,z grid squares over
-	Rotate(x,y,z): Rotate ang x,y,z*PI/2
-	Spawn(): Creates spawn effects
-	Death(): Creates death effects
-}
 
-mobs used as an object pool
+0-33
+32 snarekick starts
+49 fart bass
+65 lyric part starts
+72,73
 
-Some kind of looping beat pattern
-- Step, rotate, pulse, spawn, die,
+80,81
+88,89
+96,97
+104,105
+112,113
+114-"do you know..."
+120,121
+129,137
+138 Wub wub bass part
+144.5-145 Don't you
+160.5-161 Don't you
+169 -on't you
+184.5-185 Dont
+197- Quiet stab
 
-1,1/2,1/4
-- Tick divides beat
-All Polys go next() for each beat,
-but this is divided by tick
-- E.g., 1/2: Half of Polys go next(), 
-then the other half on next tick
-- Distribution of Polys per tick determined by pattern
-	- E.g., case 0: Every other Poly, case 1: 0-1/2, 1/2-1, etc
-
-Two modes: Fixed and Free
-Fixed: All Polys snap to grid
-- Poly movement determined by their position
-
-Free: Polys can move freely
-- Borders either loop or despawn Polys
+169 Wub wub part 2
+*/

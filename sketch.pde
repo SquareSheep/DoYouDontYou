@@ -1,7 +1,7 @@
 static float bpm = 115;
 static float beatInc = 0.5;
 static int threshold = 100;
-static int offset = -50;
+static int offset = -100;
 static int binCount = 144;
 static float defaultMass = 5;
 static float defaultVMult = 0.25;
@@ -10,11 +10,11 @@ static float fillVMult = 0.25;
 static float fftThreshold = 1.7;
 static float fftPow = 2;
 static float fftAmp = 5;
-static float volumeGain = -9;
+static float volumeGain = -10;
 static String songName = "../Music/doyoudontyou.mp3";
 
-IColor defaultFill = new IColor(0,0,0,255);
-IColor defaultStroke = new IColor(255,255,255,255);
+IColor defaultFill = new IColor(125,125,125,255);
+IColor defaultStroke = new IColor(255,255,255,0);
 
 /*
 Animation consists of PolyS objects and PolySBox containers
@@ -41,54 +41,56 @@ Rings can have different shapes:
 	Ring of outward lines
 */
 
-float gw;
-float gx = 4; float gy = 7; float gz = 4;
-
+PolySBox box;
+ArrayList<PolyS> ar;
 
 void render() {
-
-	//cam.ang.P.add(0.001,-0.003,-0.001);
+	//cam.ang.P.add(-0.01,-0.01,0);
 	if (beatQ) {
-		PolySBox box = (PolySBox)mobs.get(0);
+		instantEvents();
 
-		if (currBeat % 0.5 == 0) {
-			for (int i = 0 ; i < random(box.g.x*box.g.y)*10 ; i ++) {
-				box.add(random(3), random(-box.g.x,box.g.x),random(-box.g.y,box.g.y),-box.g.z,0,0,0);
-			}
+		// if (currBeat % 0.5 == 0) {
+		// 	for (int i = 0 ; i < random(box.g.x*box.g.y)*10 ; i ++) {
+		// 		box.add(random(3), random(-box.g.x,box.g.x),random(-box.g.y,box.g.y),-box.g.z,0,0,0);
+		// 	}
 
-			for (int i = 0 ; i < box.ar.size() ; i ++) {
-				PolyS mob = box.ar.get(i);
-				if (mob.p.p.z >= box.w.p.z-box.gw || random(1) < 0.1) {
-					mob.die();
-				} else {
-					mob.addAng((int)random(-2,3), (int)random(-2,3), (int)random(-2,3));
-					mob.addP(0,0,1);
-				}
+		// 	for (int i = 0 ; i < box.ar.size() ; i ++) {
+		// 		PolyS mob = box.ar.get(i);
+		// 		if (mob.p.p.z >= box.w.p.z-box.gw || random(1) < 0.1) {
+		// 			mob.die();
+		// 		} else {
+		// 			mob.addAng((int)random(-2,3), (int)random(-2,3), (int)random(-2,3));
+		// 			mob.addP(0,0,1);
+		// 		}
 
-				t = (float)frameCount/100;
-				x = mob.p.p.x/box.w.p.x*6;
-				y = mob.p.p.y/box.w.p.y*6;
-				z = mob.p.p.z/box.w.p.z*6;
+		// 		t = (float)frameCount/100;
+		// 		x = mob.p.p.x/box.w.p.x*6;
+		// 		y = mob.p.p.y/box.w.p.y*6;
+		// 		z = mob.p.p.z/box.w.p.z*6;
 
-				r = noise(x,t)*175;
-				g = noise(y,t)*175;
-				b = noise(z,t)*175;
-				sAmp = 0.018;
-				fillStyleSet(mob.fillStyle, r,g,b,175, 
-					r*sAmp,g*sAmp,b*sAmp,1, ((float)i/box.ar.size()*binCount)%binCount);
+		// 		r = noise(x,t)*175;
+		// 		g = noise(y,t)*175;
+		// 		b = noise(z,t)*175;
+		// 		sAmp = 0.018;
+		// 		fillStyleSet(mob.fillStyle, r,g,b,175, 
+		// 			r*sAmp,g*sAmp,b*sAmp,1, ((float)i/box.ar.size()*binCount)%binCount);
 
-				fillStyleSet(mob.strokeStyle, 0,0,0,0, 
-					r*sAmp,g*sAmp,b*sAmp,4, mob.fillStyle[0].index);
-			}
-		}
+		// 		fillStyleSet(mob.strokeStyle, 0,0,0,0, 
+		// 			r*sAmp,g*sAmp,b*sAmp,4, mob.fillStyle[0].index);
+		// 	}
+		// }
 	}
 }
 
 void setSketch() {
 	front = new PVector(de*2,de,de*0.2);
 	back = new PVector(-de*2,-de,-de*2);
-	strokeWeight(3);
+	strokeWeight(1);
 
-	gw = de*0.16;
-	mobs.add(new PolySBox(0,0,0,5,5,10,gw));
+	box = new PolySBox(0,0,0,5,5,5,de*0.16);
+	ar = box.ar;
+	mobs.add(box);
+
+	setTime(104420,201);
+	currBeat += 0.25;
 }

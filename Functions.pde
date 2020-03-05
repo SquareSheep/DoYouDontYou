@@ -17,6 +17,10 @@ int floorR(float x) {
 	}
 }
 
+int randomI(int[] list) {
+	return list[(int)random(list.length)];
+}
+
 float randomR(float minR, float maxR) {
 	if (random(1) < 0.5) {
 		return random(-maxR,-minR);

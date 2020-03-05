@@ -23,6 +23,7 @@ static PVector back;
 BeatTimer timer;
 float currTime;
 float currBeat;
+float currBeatQ;
 static float fpb;
 static int fphb, fpqb;
 int currFrame;
@@ -64,7 +65,7 @@ void setup() {
 }
 
 void draw() {
-  if (timer.beat) println(song.position() + " " + (int)(currBeat+1));
+  if (timer.beat) println(song.position() + "," + (int)(currBeat+1));
   background(0);
   cam.render();
   update();
@@ -100,6 +101,7 @@ void update() {
     currBeat += 0.25;
     beatQ = true;
   }
+  if (beatQ) currBeatQ = currBeat % 1;
 
   cam.update();
   timer.update();
