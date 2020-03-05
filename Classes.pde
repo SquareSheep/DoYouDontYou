@@ -92,6 +92,22 @@ abstract class MobFL extends Mob {
       strokeStyle[i].update();
     }
   }
+
+  void setMass(float mass) {
+    super.setMass(mass);
+    for (int i = 0 ; i < fillStyle.length ; i ++) {
+      fillStyle[i].setMass(mass);
+      strokeStyle[i].setMass(mass);
+    }
+  }
+
+  void setVMult(float vMult) {
+    super.setVMult(vMult);
+    for (int i = 0 ; i < fillStyle.length ; i ++) {
+      fillStyle[i].setVMult(vMult);
+      strokeStyle[i].setVMult(vMult);
+    }
+  }
 }
 
 abstract class MobF extends Mob {
@@ -119,9 +135,22 @@ abstract class MobF extends Mob {
     if (sca.x != 1) scale(sca.x);
   }
 
-  void setFillMass(float mass) {
+  void setMass(float mass) {
+    super.setMass(mass);
     fillStyle.setMass(mass);
     strokeStyle.setMass(mass);
+  }
+
+  void setVMult(float vMult) {
+    super.setVMult(vMult);
+    fillStyle.setVMult(vMult);
+    strokeStyle.setVMult(vMult);
+  }
+
+  void setIndex(float k) {
+    super.setIndex(k);
+    fillStyle.index = (int)k%binCount;
+    strokeStyle.index = (int)k%binCount;
   }
 }
 
@@ -135,7 +164,7 @@ abstract class Mob extends Entity {
   Point rang = new Point(0,0,0);
   Point rav = new Point(0,0,0);
   Point av = new Point(0,0,0);
-  float w = 0;
+  Point w;
   
   void setMass(float mass) {
     p.mass = mass;
@@ -146,6 +175,35 @@ abstract class Mob extends Entity {
     rv.mass = mass;
     rang.mass = mass;
     rav.mass = mass;
+    sca.mass = mass;
+    w.mass = mass;
+  }
+
+  void setVMult(float vMult) {
+    p.vMult = vMult;
+    pv.vMult = vMult;
+    ang.vMult = vMult;
+    av.vMult = vMult;
+    r.vMult = vMult;
+    rv.vMult = vMult;
+    rang.vMult = vMult;
+    rav.vMult = vMult;
+    sca.vMult = vMult;
+    w.vMult = vMult;
+  }
+
+  void setIndex(float k) {
+    int index = (int)k%binCount;
+    p.index = index;
+    pv.index = index;
+    ang.index = index;
+    av.index = index;
+    r.index = index;
+    rv.index = index;
+    rang.index = index;
+    rav.index = index;
+    sca.index = index;
+    w.index = index;
   }
 
   void update() {
@@ -160,6 +218,7 @@ abstract class Mob extends Entity {
     rav.update();
     av.update();
     sca.update();
+    w.update();
   }
 
   void setDraw() {

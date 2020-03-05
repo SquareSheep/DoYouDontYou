@@ -24,6 +24,7 @@ Poly newPoly(float type, float x, float y, float z, float ax, float ay, float az
 class Poly extends MobFL {
   Point[] vert;
   int[][] faces;
+  float w;
 
   Poly(float x, float y, float z, float ax, float ay, float az, float w, float[] vert, int[][] faces) {
     this.p = new Point(x,y,z);
@@ -46,7 +47,21 @@ class Poly extends MobFL {
   Poly() {}
 
   void update() {
-    super.update();
+    p.P.add(pv.p);
+    ang.P.add(av.p);
+    p.update();
+    pv.update();
+    r.update();
+    rv.update();
+    ang.update();
+    rang.update();
+    rav.update();
+    av.update();
+    sca.update();
+    for (int i = 0 ; i < faces.length ; i ++) {
+      fillStyle[i].update();
+      strokeStyle[i].update();
+    }
     for (int i = 0 ; i < vert.length ; i ++) {
       vert[i].update();
     }
