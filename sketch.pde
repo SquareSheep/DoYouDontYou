@@ -7,8 +7,8 @@ static float defaultMass = 5;
 static float defaultVMult = 0.25;
 static float fillMass = 5;
 static float fillVMult = 0.25;
-static float fftThreshold = 1.7;
-static float fftPow = 2;
+static float fftThreshold = 1.3;
+static float fftPow = 2.2;
 static float fftAmp = 5;
 static float volumeGain = -9;
 static String songName = "../Music/doyoudontyou.mp3";
@@ -62,7 +62,7 @@ void setSketch() {
 	ar = box.ar;
 	mobs.add(box);
 
-	box2 = new PolySBox(0,0,0, 5,5,5, de*0.16);
+	box2 = new PolySBox(0,0,0, 7,7,7, de*0.1);
 	ar2 = box2.ar;
 	mobs.add(box2);
 

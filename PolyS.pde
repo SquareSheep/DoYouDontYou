@@ -101,7 +101,7 @@ class PolyS extends Poly {
 					case 3:
 					addPT(0,0,-1);
 				}
-				addAng(1,1,0);
+				addAng(1,gety()%2-getx()%2,0);
 			break;
 			case "tower":
 				if (random(1) < 0.5) {
@@ -109,7 +109,7 @@ class PolyS extends Poly {
 				} else {
 					addPT(1,0,0);
 				}
-				addAng(getx()%2,0,0);
+				addAng(getx()%2,gety()%2,0);
 			break;
 			case "line":
 			addPT();
@@ -124,6 +124,7 @@ class PolyS extends Poly {
 				addP(x,y,z);
 			break;
 		}
+		steps ++;
 	}
 
 	void setTick(String mode, float tick, float tickOffset) {
@@ -154,13 +155,11 @@ class PolyS extends Poly {
 	void addP(float x, float y, float z) {
 		x = (int)x; y = (int)y; z = (int)z;
 		p.P.add(x*gw,y*gw,z*gw);
-		steps ++;
 	}
 
 	void addPT(float x, float y, float z) {
 		p.P.add(tx*gw,ty*gw,tz*gw);
 		p.P.add((int)x*gw,(int)y*gw,(int)z*gw);
-		steps ++;
 	}
 
 	void addPT() {

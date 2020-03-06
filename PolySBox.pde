@@ -8,7 +8,7 @@ class PolySBox extends Mob {
 	RingPool rings = new RingPool();
 	PVector g;
 	float gw;
-	boolean checkBorders = true;
+	boolean checkBorders = false;
 	boolean dieBorders = false;
 	int stepLimit = -1;
 	boolean drawBorders = false;
@@ -72,10 +72,13 @@ class PolySBox extends Mob {
 		for (int i = 0 ; i < ar.size() ; i ++) {
 			PolyS mob = ar.get(i);
 			t = (float)i/ar.size();
-			x = mob.p.p.x/w.p.x;
-			y = mob.p.p.y/w.p.y;
-			z = mob.p.p.z/w.p.z;
-			mob.fillStyleSet(rc+x*rcr,gc+y*gcr,bc+b*bcr,ac+t*acr, rcr,gcr,bcr,acr, rm+x*rmr,gm+y*gmr,bm+z*bmr,am+t*amr, rmr,gmr,bmr,amr);
+			x2 = mob.p.p.x/w.p.x;
+			y2 = mob.p.p.y/w.p.y;
+			z2 = mob.p.p.z/w.p.z;
+			x = (x2+y2);
+			y = (y2+z2);
+			z = (z2+x2);
+			mob.fillStyleSet(rc+x*rcr,gc+y*gcr,bc+z*bcr,ac+t*acr, rcr,gcr,bcr,acr, rm+x*rmr,gm+y*gmr,bm+z*bmr,am+t*amr, rmr,gmr,bmr,amr);
 		}
 		arIndex();
 	}

@@ -34,7 +34,7 @@ char keyR;
 char keyP;
 boolean beatQ = false;
 
-float temp, x,y,z, w,d, tick, r,g,b,a, i,j,k,o,t, amp,wAmp,aAmp,vAmp,fAmp,sAmp;
+float temp, x,y,z, x2,y2,z2, w,d, tick, r,g,b,a, i,j,k,o,t, amp,wAmp,aAmp,vAmp,fAmp,sAmp;
 
 void setup() {
   size(1100,1100,P3D);
@@ -42,7 +42,7 @@ void setup() {
   front = new PVector(de*2,de,de*0.2);
   back = new PVector(-de*2,-de,-de*2);
 
-  cam = new Camera(width/2,height*0.1,-de*1.5, -0.4,0,0);
+  cam = new Camera(width/2,height*0.1,-de*1.3, -0.4,0,0);
 
   textSize(de/10);
   rectMode(CENTER);
