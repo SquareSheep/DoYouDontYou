@@ -46,6 +46,19 @@ class Poly extends MobFL {
 
   Poly() {}
 
+  void setIndex(float k) {
+    int index = (int)k%binCount;
+    p.index = index;
+    pv.index = index;
+    ang.index = index;
+    av.index = index;
+    r.index = index;
+    rv.index = index;
+    rang.index = index;
+    rav.index = index;
+    sca.index = index;
+  }
+
   void update() {
     p.P.add(pv.p);
     ang.P.add(av.p);

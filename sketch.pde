@@ -62,7 +62,7 @@ void setSketch() {
 	ar = box.ar;
 	mobs.add(box);
 
-	box2 = new PolySBox(0,0,0, 3,3,3, de*0.16);
+	box2 = new PolySBox(0,0,0, 5,5,5, de*0.16);
 	ar2 = box2.ar;
 	mobs.add(box2);
 

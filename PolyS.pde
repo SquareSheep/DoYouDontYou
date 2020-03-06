@@ -28,14 +28,19 @@ PolyS newPolyS(float type, float x, float y, float z, float ax, float ay, float 
 
 class PolySBar extends PolyS {
 	PolySBar(float x, float y, float z, float ax, float ay, float az, float w) {
-		super(x,y,z,ax,ay,az,w,new float[]{-1,-1,-1, 1,-1,-1, 1,1,-1, -1,1,-1, 0,0,1},
-    new int[][]{new int[]{0,1,2,3}, new int[]{0,1,4}, new int[]{1,2,4}, new int[]{2,3,4}, new int[]{3,0,4}}, "",0,0);
+		super(x,y,z,ax,ay,az,w, new float[]{-1,-1,-1, 1,-1,-1, 1,1,-1, -1,1,-1, -1,-1,1, 1,-1,1, 1,1,1, -1,1,1},
+    new int[][]{new int[]{0,1,2,3}, new int[]{0,1,5,4}, new int[]{1,2,6,5}, new int[]{2,3,7,6}, new int[]{3,0,4,7}, new int[]{4,5,6,7}}, "",0,0);
 	}
 
 	void setM(float amp, float k) {
-		amp *= w;
-		vert[2].pm.set(0,amp,0);
-		vert[3].pm.set(0,amp,0);
+		setM(amp);
+		setIndex(k);
+	}
+
+	void setM(float amp) {
+		amp *= -w;
+		vert[0].pm.set(0,amp,0);
+		vert[1].pm.set(0,amp,0);
 		vert[4].pm.set(0,amp,0);
 		vert[5].pm.set(0,amp,0);
 	}
@@ -43,8 +48,8 @@ class PolySBar extends PolyS {
 	void setIndex(float k) {
 		int index = (int)k%binCount;
 		super.setIndex(k);
-		vert[2].index = index;
-		vert[3].index = index;
+		vert[0].index = index;
+		vert[1].index = index;
 		vert[4].index = index;
 		vert[5].index = index;
 	}
@@ -81,9 +86,6 @@ class PolyS extends Poly {
 	}
 
 	void tickUpdate() {
-		int X = getx();
-		int Y = gety();
-		int Z = getz();
 		switch(mode) {
 			case "box":
 				switch((int)(currBeat*2) % 4) {
@@ -102,15 +104,24 @@ class PolyS extends Poly {
 				addAng(1,1,0);
 			break;
 			case "tower":
-				if (p.p.x > 0) {
-					addPT(X%2,0,0);
+				if (random(1) < 0.5) {
+					addPT(-1,0,0);
 				} else {
-					addPT(-X%2,0,0);
+					addPT(1,0,0);
 				}
-				addAng(X%2,0,0);
+				addAng(getx()%2,0,0);
 			break;
 			case "line":
 			addPT();
+			break;
+			case "outward":
+				x = getx();
+				x = abs(x)/x;
+				y = getx();
+				y = abs(y)/y;
+				z = getx();
+				z = abs(z)/z;
+				addP(x,y,z);
 			break;
 		}
 	}

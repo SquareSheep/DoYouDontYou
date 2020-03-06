@@ -8,7 +8,7 @@ class PolySBox extends Mob {
 	RingPool rings = new RingPool();
 	PVector g;
 	float gw;
-	boolean checkBorders = false;
+	boolean checkBorders = true;
 	boolean dieBorders = false;
 	int stepLimit = -1;
 	boolean drawBorders = false;
@@ -24,32 +24,34 @@ class PolySBox extends Mob {
 		this.gw = gw;
 	}
 
-	void add(float type, float x, float y, float z, int ax, int ay, int az, String mode, float tick, float tickOffset) {
+	PolyS add(float type, float x, float y, float z, int ax, int ay, int az, String mode, float tick, float tickOffset) {
 		x = (int)min(max(x,-g.x),g.x);
 		y = (int)min(max(y,-g.y),g.y);
 		z = (int)min(max(z,-g.z),g.z);
 		ar.add(newPolyS(type,gw*x,gw*y,gw*z,ax*PI/2,ay*PI/2,az*PI/2,gw/2, mode, tick, tickOffset));
 		ar.get(ar.size()-1).parent = this;
+		return get();
 	}
 
-	void add(float type, float x, float y, float z, String mode, float tick, float tickOffset) {
-		add(type, x,y,z, 0,0,0, mode,tick,tickOffset);
+	PolyS add(float type, float x, float y, float z, String mode, float tick, float tickOffset) {
+		return add(type, x,y,z, 0,0,0, mode,tick,tickOffset);
 	}
 
-	void add(float type, float x, float y, float z, int ax, int ay, int az) {
-		add(type, x,y,z, ax,ay,az, "",0,0);
+	PolyS add(float type, float x, float y, float z, int ax, int ay, int az) {
+		return add(type, x,y,z, ax,ay,az, "",0,0);
 	}
 
-	void add(float type, float x, float y, float z) {
-		add(type, x,y,z, 0,0,0, "",0,0);
+	PolyS add(float type, float x, float y, float z) {
+		return add(type, x,y,z, 0,0,0, "",0,0);
 	}
 
-	void addBar(float x, float y, float z, int ax, int ay, int az) {
+	PolySBar addBar(float x, float y, float z, int ax, int ay, int az) {
 		x = (int)min(max(x,-g.x),g.x);
 		y = (int)min(max(y,-g.y),g.y);
 		z = (int)min(max(z,-g.z),g.z);
 		ar.add(new PolySBar(gw*x,gw*y,gw*z,ax*PI/2,ay*PI/2,az*PI/2,gw/2));
 		ar.get(ar.size()-1).parent = this;
+		return (PolySBar)ar.get(ar.size()-1);
 	}
 
 	PolyS get() {
