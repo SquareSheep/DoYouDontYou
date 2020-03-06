@@ -50,37 +50,6 @@ void render() {
 	//cam.ang.P.add(-0.01,-0.01,0);
 	if (beatQ) {
 		instantEvents();
-
-		// if (currBeat % 0.5 == 0) {
-		// 	for (int i = 0 ; i < random(box.g.x*box.g.y)*10 ; i ++) {
-		// 		box.add(random(3), random(-box.g.x,box.g.x),random(-box.g.y,box.g.y),-box.g.z,0,0,0);
-		// 	}
-
-		// 	for (int i = 0 ; i < box.ar.size() ; i ++) {
-		// 		PolyS mob = box.ar.get(i);
-		// 		if (mob.p.p.z >= box.w.p.z-box.gw || random(1) < 0.1) {
-		// 			mob.die();
-		// 		} else {
-		// 			mob.addAng((int)random(-2,3), (int)random(-2,3), (int)random(-2,3));
-		// 			mob.addP(0,0,1);
-		// 		}
-
-		// 		t = (float)frameCount/100;
-		// 		x = mob.p.p.x/box.w.p.x*6;
-		// 		y = mob.p.p.y/box.w.p.y*6;
-		// 		z = mob.p.p.z/box.w.p.z*6;
-
-		// 		r = noise(x,t)*175;
-		// 		g = noise(y,t)*175;
-		// 		b = noise(z,t)*175;
-		// 		sAmp = 0.018;
-		// 		fillStyleSet(mob.fillStyle, r,g,b,175, 
-		// 			r*sAmp,g*sAmp,b*sAmp,1, ((float)i/box.ar.size()*binCount)%binCount);
-
-		// 		fillStyleSet(mob.strokeStyle, 0,0,0,0, 
-		// 			r*sAmp,g*sAmp,b*sAmp,4, mob.fillStyle[0].index);
-		// 	}
-		// }
 	}
 }
 
@@ -89,11 +58,11 @@ void setSketch() {
 	back = new PVector(-de*2,-de,-de*2);
 	strokeWeight(1);
 
-	box = new PolySBox(0,0,-3, 3,3,6, de*0.16);
+	box = new PolySBox(0,0,0, 3,3,3, de*0.16);
 	ar = box.ar;
 	mobs.add(box);
 
-	box2 = new PolySBox(0,0,-3, 3,3,6, de*0.16);
+	box2 = new PolySBox(0,0,0, 3,3,3, de*0.16);
 	ar2 = box2.ar;
 	mobs.add(box2);
 
