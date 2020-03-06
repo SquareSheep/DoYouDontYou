@@ -27,15 +27,15 @@ void instantEvents() {
 	if (beatInRange(201,263) && (currBeatQ == 0.5 || currBeatQ == 0)) {
 		//if (currBeatQ == 0.5) box.setW(7,7,7);
 		//if (currBeatQ == 0) box.setW(4,4,4);
-		if (currBeatQ == 0) {
-			box2.add((int)(currBeat%2), -box2.g.x,-box2.g.y,-box2.g.z);
-			box2.add((int)(currBeat%2), -box2.g.x,box2.g.y,-box2.g.z);
-			box2.add((int)(currBeat%2), box2.g.x,box2.g.y,-box2.g.z);
-			box2.add((int)(currBeat%2), box2.g.x,-box2.g.y,-box2.g.z);
-			for (int i = 0 ; i < 4 ; i ++) {
-				ar2.get(ar2.size() -1-i).pv.reset(0,0,60);
-			}
-		}
+		// if (currBeatQ == 0) {
+		// 	box2.add((int)(currBeat%2), -box2.g.x,-box2.g.y,-box2.g.z);
+		// 	box2.add((int)(currBeat%2), -box2.g.x,box2.g.y,-box2.g.z);
+		// 	box2.add((int)(currBeat%2), box2.g.x,box2.g.y,-box2.g.z);
+		// 	box2.add((int)(currBeat%2), box2.g.x,-box2.g.y,-box2.g.z);
+		// 	for (int i = 0 ; i < 4 ; i ++) {
+		// 		ar2.get(ar2.size() -1-i).pv.reset(0,0,60);
+		// 	}
+		// }
 		if (beatInRange(203,207) || beatInRange(211,215) || beatInRange(219,223) || beatInRange(227,231)
 			|| beatInRange(235,239) || beatInRange(243,247) || beatInRange(251,255) || beatInRange(259,263)) {
 			for (int i = -(int)box.g.x ; i < box.g.x ; i ++) {
@@ -47,19 +47,19 @@ void instantEvents() {
 			}
 		}
 		if (beatInRange(203,211) || beatInRange(235,243)) for (PolyS mob : ar) {
-			mob.addP(abs(mob.gety()%3),abs(mob.getz())%3,2);
+			mob.addP(abs(mob.gety()%3),abs(mob.getz())%3,1);
 			mob.addAng(abs(mob.gety()%3),abs(mob.getz())%3,0);
 
 		} else if (beatInRange(211,219) || beatInRange(243,251)) for (PolyS mob : ar) {
-			mob.addP(abs(mob.gety()%3),-abs(mob.getz())%3,2);
+			mob.addP(abs(mob.gety()%3),-abs(mob.getz())%3,1);
 			mob.addAng(abs(mob.gety()%3),abs(mob.getz())%3,0);
 
 		} else if (beatInRange(219,227) || beatInRange(251,259)) for (PolyS mob : ar) {
-			mob.addP(-abs(mob.gety()%3),-abs(mob.getz())%3,2);
+			mob.addP(-abs(mob.gety()%3),-abs(mob.getz())%3,1);
 			mob.addAng(abs(mob.gety()%3),abs(mob.getz())%3,0);
 
 		} else if (beatInRange(227,235) || beatInRange(259,267)) for (PolyS mob : ar) {
-			mob.addP(-abs(mob.gety()%3),abs(mob.getz())%3,2);
+			mob.addP(-abs(mob.gety()%3),abs(mob.getz())%3,1);
 			mob.addAng(abs(mob.gety()%3),abs(mob.getz())%3,0);
 		}
 
