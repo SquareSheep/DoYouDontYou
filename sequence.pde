@@ -47,25 +47,25 @@ void instantEvents() {
 			}
 		}
 		if (beatInRange(203,211) || beatInRange(235,243)) for (PolyS mob : ar) {
-			mob.addP(abs(mob.gety()%3),abs(mob.getz())%3,1);
-			mob.addAng(abs(mob.gety()%3),abs(mob.getz())%3,0);
+			mob.addP(abs(mob.gety()%2),abs(mob.getz())%2,1);
+			mob.addAng(abs(mob.gety()%2),abs(mob.getz())%2,0);
 
 		} else if (beatInRange(211,219) || beatInRange(243,251)) for (PolyS mob : ar) {
-			mob.addP(abs(mob.gety()%3),-abs(mob.getz())%3,1);
-			mob.addAng(abs(mob.gety()%3),abs(mob.getz())%3,0);
+			mob.addP(abs(mob.gety()%2),-abs(mob.getz())%2,1);
+			mob.addAng(abs(mob.gety()%2),abs(mob.getz())%2,0);
 
 		} else if (beatInRange(219,227) || beatInRange(251,259)) for (PolyS mob : ar) {
-			mob.addP(-abs(mob.gety()%3),-abs(mob.getz())%3,1);
-			mob.addAng(abs(mob.gety()%3),abs(mob.getz())%3,0);
+			mob.addP(-abs(mob.gety()%2),-abs(mob.getz())%2,1);
+			mob.addAng(abs(mob.gety()%2),abs(mob.getz())%2,0);
 
 		} else if (beatInRange(227,235) || beatInRange(259,267)) for (PolyS mob : ar) {
-			mob.addP(-abs(mob.gety()%3),abs(mob.getz())%3,1);
-			mob.addAng(abs(mob.gety()%3),abs(mob.getz())%3,0);
+			mob.addP(-abs(mob.gety()%2),abs(mob.getz())%2,1);
+			mob.addAng(abs(mob.gety()%2),abs(mob.getz())%2,0);
 		}
 
 		box.arFillStyleSet(55,55,55,255, 100,100,100,0, 1,1,1,0, 1,1,1,0);
 		for (PolyS mob : ar) {
-			if (mob.steps > 9) mob.die();
+			if (mob.steps > 10) mob.die();
 		}
 	}
 	switch((int)(currBeat*4)) {
