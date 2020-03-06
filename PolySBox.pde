@@ -9,7 +9,7 @@ class PolySBox extends Mob {
 	PVector g;
 	float gw;
 	boolean checkBorders = true;
-	boolean dieBorders = false;
+	boolean dieBorders = true;
 	int stepLimit = -1;
 	boolean drawBorders = false;
 
@@ -80,7 +80,7 @@ class PolySBox extends Mob {
 		if (checkBorders) {
 			for (PolyS mob : ar) {
 				if (checkMobBorder(mob) && dieBorders) {
-					mob.die();
+					if (mob.alive) mob.die();
 				}
 			}
 		}

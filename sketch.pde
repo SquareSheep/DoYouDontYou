@@ -10,7 +10,7 @@ static float fillVMult = 0.25;
 static float fftThreshold = 1.7;
 static float fftPow = 2;
 static float fftAmp = 5;
-static float volumeGain = -10;
+static float volumeGain = -9;
 static String songName = "../Music/doyoudontyou.mp3";
 
 IColor defaultFill = new IColor(125,125,125,255);
@@ -43,6 +43,8 @@ Rings can have different shapes:
 
 PolySBox box;
 ArrayList<PolyS> ar;
+PolySBox box2;
+ArrayList<PolyS> ar2;
 
 void render() {
 	//cam.ang.P.add(-0.01,-0.01,0);
@@ -87,9 +89,13 @@ void setSketch() {
 	back = new PVector(-de*2,-de,-de*2);
 	strokeWeight(1);
 
-	box = new PolySBox(0,0,0,5,5,5,de*0.16);
+	box = new PolySBox(0,0,-3, 3,3,6, de*0.16);
 	ar = box.ar;
 	mobs.add(box);
+
+	box2 = new PolySBox(0,0,-3, 3,3,6, de*0.16);
+	ar2 = box2.ar;
+	mobs.add(box2);
 
 	setTime(104420,201);
 	currBeat += 0.25;

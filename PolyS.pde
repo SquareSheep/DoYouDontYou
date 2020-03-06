@@ -104,14 +104,17 @@ class PolyS extends Poly {
 	}
 
 	int getx() {
-		return (int)(p.p.x/gw - p.p.x%gw);
+		if (p.p.x > 0) return (int)(p.p.x/gw - p.p.x%gw);
+		return (int)(p.p.x/gw - p.p.x%gw+1);
 	}
 
 	int gety() {
-		return (int)(p.p.y/gw - p.p.y%gw);
+		if (p.p.y > 0) return (int)(p.p.y/gw - p.p.y%gw);
+		return (int)(p.p.y/gw - p.p.y%gw+1);
 	}
 
 	int getz() {
-		return (int)(p.p.z/gw - p.p.z%gw);
+		if (p.p.z > 0) return (int)(p.p.z/gw - p.p.z%gw);
+		return (int)(p.p.z/gw - p.p.z%gw+1);
 	}
 }
