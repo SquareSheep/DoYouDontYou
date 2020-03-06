@@ -25,31 +25,16 @@ int bgType = 0;
 void instantEvents() {
 	// Intro section
 	if (beatInRange(201,263) && (currBeatQ == 0.5 || currBeatQ == 0)) {
-		if (beatInRange(203,207) || beatInRange(211,215) || beatInRange(219,223) || beatInRange(227,231)
-			|| beatInRange(235,239) || beatInRange(243,247) || beatInRange(251,255) || beatInRange(259,263)) {
-			for (int i = -(int)box.g.x ; i < box.g.x ; i ++) {
-				i +=2;
-				for (int k = -(int)box.g.y ; k < box.g.y ; k ++) {
-					box.add(randomI(new int[]	{0,2}),i,box.g.y,k);
-					k +=2;
-				}
-			}
+		if (beatInRange(203,207) || beatInRange(219,223) || beatInRange(235,239) || beatInRange(251,255)) {
+			for (int i = -(int)box.g.x ; i < box.g.x ; i += 3)
+				for (int k = -(int)box.g.y ; k < box.g.y ; k += 3) box.add(randomI(new int[]{0,2}),i,box.g.y,k, "box",0.5,0);
 		}
-		if (beatInRange(203,211) || beatInRange(235,243)) for (PolyS mob : ar) {
-			mob.addP(abs(mob.gety()%2),-1,abs(mob.getx())%2);
-			mob.addAng(abs(mob.gety()%2),abs(mob.getz())%2,0);
-
-		} else if (beatInRange(211,219) || beatInRange(243,251)) for (PolyS mob : ar) {
-			mob.addP(abs(mob.gety()%2),-1,-abs(mob.getx())%2);
-			mob.addAng(abs(mob.gety()%2),abs(mob.getz())%2,0);
-
-		} else if (beatInRange(219,227) || beatInRange(251,259)) for (PolyS mob : ar) {
-			mob.addP(-abs(mob.gety()%2),-1,-abs(mob.getx())%2);
-			mob.addAng(abs(mob.gety()%2),abs(mob.getz())%2,0);
-
-		} else if (beatInRange(227,235) || beatInRange(259,267)) for (PolyS mob : ar) {
-			mob.addP(-abs(mob.gety()%2),-1,abs(mob.getx())%2);
-			mob.addAng(abs(mob.gety()%2),abs(mob.getz())%2,0);
+		if (beatInRange(211,215) || beatInRange(227,231) || beatInRange(243,247) || beatInRange(259,263)) {
+			for (int i = -(int)box.g.x ; i < box.g.x ; i += 3)
+				for (int k = -(int)box.g.y ; k < box.g.y ; k += 3) box.add(randomI(new int[]{0,2}),i,box.g.y,k, "tower",0.5,0);
+		}
+		if (currBeatQ == 0) {
+			box.add(0,-10,10,-10, "line",0.5,0); box.add(0,10,10,-10, "line",0.5,0); box.add(0,10,10,10, "line",0.5,0); box.add(0,-10,10,10, "line",0.5,0);
 		}
 
 		box.arFillStyleSet(55,55,55,255, 100,100,100,0, 1,1,1,0, 1,1,1,0);
