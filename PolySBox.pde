@@ -66,7 +66,7 @@ class PolySBox extends Mob {
 		w.P.set(gw*(int)x, gw*(int)y, gw*(int)z);
 	}
 
-	void arFillStyleSet(float rc, float gc, float bc, float ac, float rcr, float gcr, float bcr, float acr, 
+	void arFillStyleSet(boolean which, float rc, float gc, float bc, float ac, float rcr, float gcr, float bcr, float acr, 
 		float rm, float gm, float bm, float am, float rmr, float gmr, float bmr, float amr) {
 		float x,y,z,t;
 		for (int i = 0 ; i < ar.size() ; i ++) {
@@ -78,9 +78,18 @@ class PolySBox extends Mob {
 			x = (x2+y2);
 			y = (y2+z2);
 			z = (z2+x2);
-			mob.fillStyleSet(rc+x*rcr,gc+y*gcr,bc+z*bcr,ac+t*acr, rcr,gcr,bcr,acr, rm+x*rmr,gm+y*gmr,bm+z*bmr,am+t*amr, rmr,gmr,bmr,amr);
+			if (which) {
+				mob.fillStyleSet(rc+x*rcr,gc+y*gcr,bc+z*bcr,ac+t*acr, rcr,gcr,bcr,acr, rm+x*rmr,gm+y*gmr,bm+z*bmr,am+t*amr, rmr,gmr,bmr,amr);
+			} else {
+				mob.strokeStyleSet(rc+x*rcr,gc+y*gcr,bc+z*bcr,ac+t*acr, rcr,gcr,bcr,acr, rm+x*rmr,gm+y*gmr,bm+z*bmr,am+t*amr, rmr,gmr,bmr,amr);
+			}
 		}
 		arIndex();
+	}
+
+	void arFillStyleSet(float rc, float gc, float bc, float ac, float rcr, float gcr, float bcr, float acr, 
+		float rm, float gm, float bm, float am, float rmr, float gmr, float bmr, float amr) {
+		arFillStyleSet(false, rc,gc,bc,ac, rcr,gcr,bcr,acr, rm,gm,bm,am, rmr,gmr,bmr,amr);
 	}
 
 	void arIndex() {

@@ -63,20 +63,22 @@ void instantEvents() {
 				ar.get(i).die();
 			}
 			for (int i = -(int)box.g.x; i < box.g.x - 1 ; i ++) 
-				for (int k = -(int)box.g.y ; k < box.g.y ; k ++) box.add(random(3),i,k,-box.g.z, 1,0,0);
+				for (int k = -(int)box.g.y ; k < box.g.y ; k ++) box.add(random(3),i,k,-box.g.z, 0,2,0);
 			for (int i = -(int)box.g.z + 1 ; i < box.g.x ; i ++) 
-				for (int k = -(int)box.g.y ; k < box.g.y ; k ++) box.add(random(3),-box.g.x,k,i, 1,0,0);
+				for (int k = -(int)box.g.y ; k < box.g.y ; k ++) box.add(random(3),-box.g.x,k,i, 0,3,0);
 			for (int i = -(int)box.g.x + 1 ; i < box.g.x ; i ++) 
-				for (int k = -(int)box.g.y ; k < box.g.y ; k ++) box.add(random(3),i,k,box.g.z, 1,0,0);
+				for (int k = -(int)box.g.y ; k < box.g.y ; k ++) box.add(random(3),i,k,box.g.z, 0,0,0);
 			for (int i = -(int)box.g.z ; i < box.g.x - 1 ; i ++) 
-				for (int k = -(int)box.g.y ; k < box.g.y ; k ++) box.add(random(3),box.g.x,k,i, 1,0,0);
+				for (int k = -(int)box.g.y ; k < box.g.y ; k ++) box.add(random(3),box.g.x,k,i, 0,1,0);
 			for (int i = 0 ; i < ar.size() ; i ++) {
-				ar.get(i).av.reset(0,0,-0.01);
+				ar.get(i).av.reset(0,0.01,0);
 			}
 			if (currBeat % 1 == 0) {
-				box.arFillStyleSet(0,55,75,255, 0,55,-55,0, 2,1,1,0, 0,0,0,0);
+				//box.arFillStyleSet(0,55,75,255, 0,55,-55,0, 2,1,1,0, 0,0,0,0);
+				box.arFillStyleSet(true,0,55,75,255, 0,55,-55,0, 2,1,1,0, 0,0,0,0);
 			} else {
-				box.arFillStyleSet(125,55,25,255, 100,55,25,0, 2,2,2,0, 0,0,0,0);
+				//box.arFillStyleSet(125,55,25,255, 100,55,25,0, 2,2,2,0, 0,0,0,0);
+				box.arFillStyleSet(true,125,55,25,255, 100,55,25,0, 2,2,2,0, 0,0,0,0);
 			}
 		}
 	}

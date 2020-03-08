@@ -77,8 +77,13 @@ class RingPool extends ObjectPool<Ring> {
 		}
 		Ring mob = ar.get(arm);
 		set(mob,type,x,y,z,ax,ay,az,w,wMax,amp);
-		mob.fillStyle.reset(parent.fillStyle[0]);
-		arm ++;
+		if (parent.strokeStyle[0].a.x > parent.fillStyle[0].a.x) {
+			mob.fillStyle.reset(parent.strokeStyle[0]);
+		} else {
+			mob.fillStyle.reset(parent.fillStyle[0]);
+			
+		}
+	arm ++;
 	}
 
 	void add(int type, PolyS parent, float w, float wMax, float amp) {
@@ -86,10 +91,10 @@ class RingPool extends ObjectPool<Ring> {
 	}
 
 	void add(int type, PolyS parent, float w, float wMax) {
-		add(type, parent, parent.p.p.x,parent.p.p.y,parent.p.p.z, parent.ang.p.x,parent.ang.p.y,parent.ang.p.z, w, wMax, 0.5);
+		add(type, parent, parent.p.p.x,parent.p.p.y,parent.p.p.z, parent.ang.p.x,parent.ang.p.y,parent.ang.p.z, w, wMax, 0.25);
 	}
 
 	void add(int type, PolyS parent, float wMax) {
-		add(type, parent, parent.p.p.x,parent.p.p.y,parent.p.p.z, parent.ang.p.x,parent.ang.p.y,parent.ang.p.z, parent.w, wMax, 0.5);
+		add(type, parent, parent.p.p.x,parent.p.p.y,parent.p.p.z, parent.ang.p.x,parent.ang.p.y,parent.ang.p.z, parent.w, wMax, 0.25);
 	}
 }

@@ -13,7 +13,7 @@ static float fftAmp = 5;
 static float volumeGain = -9;
 static String songName = "../Music/doyoudontyou.mp3";
 
-IColor defaultFill = new IColor(125,125,125,255);
+IColor defaultFill = new IColor(0,0,0,0);
 IColor defaultStroke = new IColor(255,255,255,0);
 
 /*
@@ -56,7 +56,7 @@ void render() {
 void setSketch() {
 	front = new PVector(de*2,de,de*0.2);
 	back = new PVector(-de*2,-de,-de*2);
-	strokeWeight(1);
+	strokeWeight(4);
 
 	box = new PolySBox(0,0,0, 3,3,3, de*0.16);
 	ar = box.ar;
