@@ -23,17 +23,18 @@ void addEvents() {
 
 int bgType = 0;
 void instantEvents() {
-	// Intro section
+	// Setup
 	if (currBeat == 202) {
 		cam.av.reset(0,-0.001,0);
-		for (int i = 0 ; i < box2.g.x*2 ; i ++) {
-			box2.addBar(i-box2.g.x,10,-10, 0,0,0).setM(0.01,(float)i/box2.g.x/8*binCount);
-			box2.addBar(i-box2.g.x,10,10, 0,0,0).setM(0.01,(float)(i+box2.g.x*2)/box2.g.x/8*binCount);
-		}
-		for (int i = 0 ; i < box2.g.z*2 ; i ++) box2.addBar(-10,10,i-box2.g.z, 0,0,0).setM(0.01,(float)(i+box2.g.x*4)/box2.g.z/8*binCount);
-		for (int i = 0 ; i < box2.g.z*2+1 ; i ++) box2.addBar(10,10,i-box2.g.z, 0,0,0).setM(0.01,(float)(i+box2.g.x*6)/box2.g.z/8*binCount);
-		box2.arFillStyleSet(0,0,125,255, 125,0,-125,0, 0.25,0.25,0.25,0, 0,0,0,0);
+		// for (int i = 0 ; i < box2.g.x*2 ; i ++) {
+		// 	box2.addBar(i-box2.g.x,10,-10, 0,0,0).setM(0.01,(float)i/box2.g.x/8*binCount);
+		// 	box2.addBar(i-box2.g.x,10,10, 0,0,0).setM(0.01,(float)(i+box2.g.x*2)/box2.g.x/8*binCount);
+		// }
+		// for (int i = 0 ; i < box2.g.z*2 ; i ++) box2.addBar(-10,10,i-box2.g.z, 0,0,0).setM(0.01,(float)(i+box2.g.x*4)/box2.g.z/8*binCount);
+		// for (int i = 0 ; i < box2.g.z*2+1 ; i ++) box2.addBar(10,10,i-box2.g.z, 0,0,0).setM(0.01,(float)(i+box2.g.x*6)/box2.g.z/8*binCount);
+		// box2.arFillStyleSet(0,0,125,255, 125,0,-125,0, 0.25,0.25,0.25,0, 0,0,0,0);
 	}
+	// Intro section
 	if (beatInRange(201,266) && (currBeatQ == 0.5 || currBeatQ == 0)) {
 		if (beatInRange(203,207) || beatInRange(219,223) || beatInRange(235,239) || beatInRange(251,255)) {
 			for (int i = -(int)box.g.x ; i < box.g.x ; i += 3)
@@ -41,17 +42,12 @@ void instantEvents() {
 		}
 		if (beatInRange(211,215) || beatInRange(227,231) || beatInRange(243,247) || beatInRange(259,263)) {
 			for (int i = -(int)box.g.x ; i < box.g.x ; i += 3)
-				for (int k = -(int)box.g.y ; k < box.g.y ; k += 3) box.add(randomI(new int[]{0,2}),i,box.g.y,k, "tower",0.5,0);
+				for (int k = -(int)box.g.y ; k < box.g.y ; k += 3) box.add(randomI(new int[]{0,2}),i,box.g.y,k, "outwardS",0.5,0);
 		}
-		// if (currBeat % 2 == 0) {
-		// 	box2.add(2,-10,10,-10, "line",0.5,0);
-		// 	box2.add(2,10,10,-10, "line",0.5,0);
-		// 	box2.add(2,10,10,10, "line",0.5,0);
-		// 	box2.add(2,-10,10,10, "line",0.5,0);
-		// }
 
-		box.arFillStyleSet(55,55,55,255, 100,-100,100,0, 1,1,1,0, 1,1,1,0);
-		for (PolyS mob : ar) if (mob.steps > 4) mob.die();
+		box.arFillStyleSet(55,55,55,75, 100,-100,100,0, 1,1,1,0, 1,1,1,0);
+		box.arFillStyleSet(true,25,25,25,75, 25,-25,25,0, 0,0,0,2, 1,1,1,0);
+		for (PolyS mob : ar) if (mob.steps > 6) mob.die();
 		//for (PolyS mob : ar2) if (mob.steps > 4) mob.die();
 	}
 	// Bridge section

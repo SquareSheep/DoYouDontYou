@@ -16,6 +16,24 @@ static String songName = "../Music/doyoudontyou.mp3";
 IColor defaultFill = new IColor(0,0,0,0);
 IColor defaultStroke = new IColor(255,255,255,0);
 
+
+/*
+SYSTEM CHANGES
+
+PolyS EXTENDS Mob
+PolyS has an OBJECT POOL
+PolyS DOES NOT HAVE vertices or faces
+
+Remember Glacier? Try something like that
+
+Polys are still grid-locked, with special animation functions etc
+
+Additional behavior is that they can spawn more of themselves, in cascading patterns
+
+PolySBoxes can also be used to spawn Polys based on pitches
+
+*/
+
 /*
 Animation consists of PolyS objects and PolySBox containers
 
@@ -58,11 +76,11 @@ void setSketch() {
 	back = new PVector(-de*2,-de,-de*2);
 	strokeWeight(4);
 
-	box = new PolySBox(0,0,0, 3,3,3, de*0.16);
+	box = new PolySBox(0,0,0, 5,5,5, de*0.25);
 	ar = box.ar;
 	mobs.add(box);
 
-	box2 = new PolySBox(0,0,0, 7,7,7, de*0.1);
+	box2 = new PolySBox(0,0,0, 7,7,7, de*0.3);
 	ar2 = box2.ar;
 	mobs.add(box2);
 

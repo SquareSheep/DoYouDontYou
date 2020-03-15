@@ -8,8 +8,8 @@ class PolySBox extends Mob {
 	RingPool rings = new RingPool();
 	PVector g;
 	float gw;
-	boolean checkBorders = false;
-	boolean dieBorders = false;
+	boolean checkBorders = true;
+	boolean dieBorders = true;
 	int stepLimit = -1;
 	boolean drawBorders = false;
 	Point arPv = new Point();
@@ -110,8 +110,8 @@ class PolySBox extends Mob {
 		super.update();
 		rings.update();
 		g.set(w.p.x/gw,w.p.y/gw,w.p.z/gw);
-		for (PolyS mob : ar) {
-			mob.update();
+		for (int i = 0 ; i < ar.size() ; i ++) {
+			ar.get(i).update();
 		}
 		for (int i = 0 ; i < ar.size() ; i ++) {
 			if (ar.get(i).finished) ar.remove(i);

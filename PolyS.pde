@@ -88,6 +88,7 @@ class PolyS extends Poly {
 	void tickUpdate() {
 		switch(mode) {
 			case "box":
+				if (gety() % 3 == 0) parent.add(randomI(new int[]{0,2}),getx(),gety(),getz(), "tower",0.5,0);
 				switch((int)(currBeat*2) % 4) {
 					case 0:
 					addPT(1,0,0);
@@ -122,6 +123,14 @@ class PolyS extends Poly {
 				z = getx();
 				z = abs(z)/z;
 				addP(x,y,z);
+			break;
+			case "outwardS":
+				if (steps % 2 == 0) {
+					addPT(-1,0,0);
+				} else {
+					addPT(1,0,0);
+				}
+				if (gety() % 2 == 0) parent.add(randomI(new int[]{0,2}),getx(),gety(),getz(), "box",0.5,0);
 			break;
 		}
 		steps ++;
