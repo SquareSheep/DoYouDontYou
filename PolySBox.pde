@@ -6,7 +6,7 @@ Checks boundaries
 class PolySBox extends Mob {
 	ArrayList<PolyS> ar = new ArrayList<PolyS>();
 	RingPool rings = new RingPool();
-	PVector g;
+	int gx; int gy; int gz;
 	float gw;
 	boolean checkBorders = true;
 	boolean dieBorders = true;
@@ -20,35 +20,39 @@ class PolySBox extends Mob {
 		p = new Point(x*gw,y*gw,z*gw);
 		ang = new Point();
 		this.w = new Point(w*gw,h*gw,d*gw);
-		g = new PVector(w,h,d);
+		gx = w; gy = h; gz = d;
 		this.gw = gw;
 	}
 
-	PolyS add(float type, float x, float y, float z, int ax, int ay, int az, String mode, float tick, float tickOffset) {
-		x = (int)min(max(x,-g.x),g.x);
-		y = (int)min(max(y,-g.y),g.y);
-		z = (int)min(max(z,-g.z),g.z);
-		ar.add(newPolyS(type,gw*x,gw*y,gw*z,ax*PI/2,ay*PI/2,az*PI/2,gw/2, mode, tick, tickOffset));
+	PolyS add(float type, float x, float y, float z, int ax, int ay, int az, String mode, float tick, float tickOffset, float maxSteps) {
+		x = (int)min(max(x,-gx),gx);
+		y = (int)min(max(y,-gy),gy);
+		z = (int)min(max(z,-gz),gz);
+		ar.add(newPolyS(type,gw*x,gw*y,gw*z,ax*PI/2,ay*PI/2,az*PI/2,gw/2, mode, tick, tickOffset, maxSteps));
 		ar.get(ar.size()-1).parent = this;
 		return get();
 	}
 
+	PolyS add(float type, float x, float y, float z, String mode, float tick, float tickOffset, float maxSteps) {
+		return add(type, x,y,z, 0,0,0, mode,tick,tickOffset,maxSteps);
+	}
+
 	PolyS add(float type, float x, float y, float z, String mode, float tick, float tickOffset) {
-		return add(type, x,y,z, 0,0,0, mode,tick,tickOffset);
+		return add(type, x,y,z, 0,0,0, mode,tick,tickOffset,8);
 	}
 
 	PolyS add(float type, float x, float y, float z, int ax, int ay, int az) {
-		return add(type, x,y,z, ax,ay,az, "",0,0);
+		return add(type, x,y,z, ax,ay,az, "",0,0, 8);
 	}
 
 	PolyS add(float type, float x, float y, float z) {
-		return add(type, x,y,z, 0,0,0, "",0,0);
+		return add(type, x,y,z, 0,0,0, "",0,0, 8);
 	}
 
 	PolySBar addBar(float x, float y, float z, int ax, int ay, int az) {
-		x = (int)min(max(x,-g.x),g.x);
-		y = (int)min(max(y,-g.y),g.y);
-		z = (int)min(max(z,-g.z),g.z);
+		x = (int)min(max(x,-gx),gx);
+		y = (int)min(max(y,-gy),gy);
+		z = (int)min(max(z,-gz),gz);
 		ar.add(new PolySBar(gw*x,gw*y,gw*z,ax*PI/2,ay*PI/2,az*PI/2,gw/2));
 		ar.get(ar.size()-1).parent = this;
 		return (PolySBar)ar.get(ar.size()-1);
@@ -109,7 +113,9 @@ class PolySBox extends Mob {
 	void update() {
 		super.update();
 		rings.update();
-		g.set(w.p.x/gw,w.p.y/gw,w.p.z/gw);
+		gx = (int)(w.p.x/gw);
+		gy = (int)(w.p.y/gw);
+		gz = (int)(w.p.z/gw);
 		for (int i = 0 ; i < ar.size() ; i ++) {
 			ar.get(i).update();
 		}

@@ -65,10 +65,10 @@ PolySBox box2;
 ArrayList<PolyS> ar2;
 
 void render() {
-	//cam.ang.P.add(-0.01,-0.01,0);
 	if (beatQ) {
 		instantEvents();
 	}
+	//text(frameRate,0,0);
 }
 
 void setSketch() {
@@ -76,14 +76,14 @@ void setSketch() {
 	back = new PVector(-de*2,-de,-de*2);
 	strokeWeight(4);
 
-	box = new PolySBox(0,0,0, 5,5,5, de*0.25);
+	box = new PolySBox(0,0,0, 4,4,4, de*0.15);
 	ar = box.ar;
 	mobs.add(box);
 
-	box2 = new PolySBox(0,0,0, 7,7,7, de*0.3);
-	ar2 = box2.ar;
-	mobs.add(box2);
+	// box2 = new PolySBox(0,0,0, 7,7,7, de*0.3);
+	// ar2 = box2.ar;
+	// mobs.add(box2);
 
-	setTime(104420,201);
+	setTime(103886,200);
 	currBeat += 0.25;
 }

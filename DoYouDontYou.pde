@@ -42,7 +42,7 @@ void setup() {
   front = new PVector(de*2,de,de*0.2);
   back = new PVector(-de*2,-de,-de*2);
 
-  cam = new Camera(width/2,height*0.1,-de*1.3, -0.4,0,0);
+  cam = new Camera(width*0.5,height*0.5,-de*1.3, 0,0,0);
 
   textSize(de/10);
   rectMode(CENTER);

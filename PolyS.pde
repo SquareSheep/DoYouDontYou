@@ -3,7 +3,7 @@ Snap-to-grid Poly
 Custom class for Do You Don't You
 Snaps to grid, right angles, and has special animation functions
 */
-PolyS newPolyS(float type, float x, float y, float z, float ax, float ay, float az, float w, String mode, float tick, float tickOffset) {
+PolyS newPolyS(float type, float x, float y, float z, float ax, float ay, float az, float w, String mode, float tick, float tickOffset, float maxSteps) {
   PolyS poly;
   switch ((int)type) {
     case 0: // Pyramid
@@ -23,6 +23,7 @@ PolyS newPolyS(float type, float x, float y, float z, float ax, float ay, float 
     poly = new PolyS();
     break;
   }
+  poly.maxSteps = (int)maxSteps;
   return poly;
 }
 
@@ -62,6 +63,7 @@ class PolyS extends Poly {
 	PolySBox parent;
 
 	int steps = 0;
+	int maxSteps = 8;
 	String mode = "";
 	float tick = 0.5;
 	float tickOffset = 0;
@@ -87,53 +89,16 @@ class PolyS extends Poly {
 
 	void tickUpdate() {
 		switch(mode) {
-			case "box":
-				if (gety() % 3 == 0) parent.add(randomI(new int[]{0,2}),getx(),gety(),getz(), "tower",0.5,0);
-				switch((int)(currBeat*2) % 4) {
-					case 0:
-					addPT(1,0,0);
-					break;
-					case 1:
-					addPT(0,0,1);
-					break;
-					case 2:
-					addPT(-1,0,0);
-					break;
-					case 3:
-					addPT(0,0,-1);
-				}
-				addAng(1,gety()%2-getx()%2,0);
-			break;
-			case "tower":
-				if (random(1) < 0.5) {
-					addPT(-1,0,0);
-				} else {
-					addPT(1,0,0);
-				}
-				addAng(getx()%2,gety()%2,0);
+			case "source":
+			PolyS mob = parent.add(1,getx(),gety(),getz(), "line",tick,tickOffset,maxSteps);
+			mob.setT(tx,ty,tz);
 			break;
 			case "line":
 			addPT();
 			break;
-			case "outward":
-				x = getx();
-				x = abs(x)/x;
-				y = getx();
-				y = abs(y)/y;
-				z = getx();
-				z = abs(z)/z;
-				addP(x,y,z);
-			break;
-			case "outwardS":
-				if (steps % 2 == 0) {
-					addPT(-1,0,0);
-				} else {
-					addPT(1,0,0);
-				}
-				if (gety() % 2 == 0) parent.add(randomI(new int[]{0,2}),getx(),gety(),getz(), "box",0.5,0);
-			break;
 		}
 		steps ++;
+		if (steps == maxSteps) die();
 	}
 
 	void setTick(String mode, float tick, float tickOffset) {
@@ -173,7 +138,6 @@ class PolyS extends Poly {
 
 	void addPT() {
 		p.P.add(tx*gw,ty*gw,tz*gw);
-		steps ++;
 	}
 
 	void addR(float x, float y, float z) {
@@ -194,7 +158,10 @@ class PolyS extends Poly {
 	void setP(float x, float y, float z) {
 		x = (int)x; y = (int)y; z = (int)z;
 		p.P.set(x*gw,y*gw,z*gw);
-		steps ++;
+	}
+
+	void setT(float x, float y, float z) {
+		tx = (int)x; ty = (int)y; tz = (int)z;
 	}
 
 	void setR(float x, float y, float z) {
@@ -203,17 +170,14 @@ class PolyS extends Poly {
 	}
 
 	int getx() {
-		if (p.p.x > 0) return (int)(p.p.x/gw - p.p.x%gw);
-		return (int)(p.p.x/gw - p.p.x%gw+1);
+		return (int)(p.p.x/gw);
 	}
 
 	int gety() {
-		if (p.p.y > 0) return (int)(p.p.y/gw - p.p.y%gw);
-		return (int)(p.p.y/gw - p.p.y%gw+1);
+		return (int)(p.p.y/gw);
 	}
 
 	int getz() {
-		if (p.p.z > 0) return (int)(p.p.z/gw - p.p.z%gw);
-		return (int)(p.p.z/gw - p.p.z%gw+1);
+		return (int)(p.p.z/gw);
 	}
 }
