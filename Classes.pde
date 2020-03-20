@@ -128,13 +128,6 @@ abstract class MobFL extends Mob {
       strokeStyle[i].set(rc+rcr*t, gc+gcr*t, bc+bcr*t, ac+acr*t, rm+rmr*t, gm+gmr*t, bm+bmr*t, am+amr*t);
     }
   }
-
-  void fillStyleIndex(float index) {
-    for (int i = 0 ; i < fillStyle.length ; i ++) {
-      fillStyle[i].index = (int)(index + i)%binCount;
-      strokeStyle[i].index = (int)(index + i)%binCount;
-    }
-  }
 }
 
 abstract class MobF extends Mob {

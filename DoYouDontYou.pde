@@ -42,7 +42,7 @@ void setup() {
   front = new PVector(de*2,de,de*0.2);
   back = new PVector(-de*2,-de,-de*2);
 
-  cam = new Camera(width*0.5,height*0.5,-de*1.3, 0,0,0);
+  cam = new Camera(width*0.5,height*0.5,-de*1.5, 0,0,0);
 
   textSize(de/10);
   rectMode(CENTER);
@@ -54,8 +54,6 @@ void setup() {
 
   timer = new BeatTimer(threshold,offset,bpm);
   fpb = 3600/bpm;
-  fphb = (int)(fpb*0.5);
-  fpqb = (int)(fpb*0.25);
   
   song.loop();
   song.setGain(volumeGain);
@@ -97,7 +95,7 @@ void update() {
     currBeat += 0.25;
   }
   currFrame ++;
-  if (currFrame == fpqb || currFrame == fphb || currFrame == fpqb*3) {
+  if (currFrame == 8 || currFrame == 16 || currFrame == 24) {
     currBeat += 0.25;
     beatQ = true;
   }

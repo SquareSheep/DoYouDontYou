@@ -1,129 +1,165 @@
-/*
-Snap-to-grid Poly
-Custom class for Do You Don't You
-Snaps to grid, right angles, and has special animation functions
-*/
-PolyS newPolyS(float type, float x, float y, float z, float ax, float ay, float az, float w, String mode, float tick, float tickOffset, float maxSteps) {
-  PolyS poly;
-  switch ((int)type) {
-    case 0: // Pyramid
-    poly = new PolyS(x,y,z, ax,ay,az, w, new float[]{-1,-1,-1, 1,-1,-1, 1,1,-1, -1,1,-1, 0,0,1},
-    new int[][]{new int[]{0,1,2,3}, new int[]{0,1,4}, new int[]{1,2,4}, new int[]{2,3,4}, new int[]{3,0,4}}, mode, tick, tickOffset);
-    break;
-    case 1: // Box
-    poly = new PolyS(x,y,z, ax,ay,az, w, new float[]{-1,-1,-1, 1,-1,-1, 1,1,-1, -1,1,-1, -1,-1,1, 1,-1,1, 1,1,1, -1,1,1},
-    new int[][]{new int[]{0,1,2,3}, new int[]{0,1,5,4}, new int[]{1,2,6,5}, new int[]{2,3,7,6}, new int[]{3,0,4,7}, new int[]{4,5,6,7}}, mode, tick, tickOffset);
-    break;
-    case 2: // Octahedron
-    poly = new PolyS(x,y,z, ax,ay,az, w, new float[]{0,-1,0, -1,0,0, 0,0,1, 1,0,0, 0,0,-1, 0,1,0},
-      new int[][]{new int[]{0,1,2}, new int[]{0,2,3}, new int[]{0,3,4}, new int[]{0,4,1},
-      new int[]{5,1,2}, new int[]{5,2,3}, new int[]{5,3,4}, new int[]{5,4,1}}, mode, tick, tickOffset); //0,1,4,5
-    break;  
-    default:
-    poly = new PolyS();
-    break;
-  }
-  poly.maxSteps = (int)maxSteps;
-  return poly;
-}
-
-class PolySBar extends PolyS {
-	PolySBar(float x, float y, float z, float ax, float ay, float az, float w) {
-		super(x,y,z,ax,ay,az,w, new float[]{-1,-1,-1, 1,-1,-1, 1,1,-1, -1,1,-1, -1,-1,1, 1,-1,1, 1,1,1, -1,1,1},
-    new int[][]{new int[]{0,1,2,3}, new int[]{0,1,5,4}, new int[]{1,2,6,5}, new int[]{2,3,7,6}, new int[]{3,0,4,7}, new int[]{4,5,6,7}}, "",0,0);
-	}
-
-	void setM(float amp, float k) {
-		setM(amp);
-		setIndex(k);
-	}
-
-	void setM(float amp) {
-		amp *= -w;
-		vert[0].pm.set(0,amp,0);
-		vert[1].pm.set(0,amp,0);
-		vert[4].pm.set(0,amp,0);
-		vert[5].pm.set(0,amp,0);
-	}
-
-	void setIndex(float k) {
-		int index = (int)k%binCount;
-		super.setIndex(k);
-		vert[0].index = index;
-		vert[1].index = index;
-		vert[4].index = index;
-		vert[5].index = index;
-	}
-}
-
 float pi2 = PI/2;
-class PolyS extends Poly {
+class PolyS extends Entity {
+	Point p = new Point();
+	Point pv = new Point();
+	Point w = new Point();
 	float gw;
+	Point ang = new Point();
+	Point av = new Point();
+	IColor[] fillStyle = new IColor[10];
+	IColor[] strokeStyle = new IColor[10];
+	SpringValue sca = new SpringValue(1);
+	int index;
+	float threshold = 100;
+
+	
 	boolean alive = true;
+	boolean diePulse = true;
 	PolySBox parent;
+	PolyTemp template;
 
 	int steps = 0;
 	int maxSteps = 8;
-	String mode = "";
+	String[] modes;
 	float tick = 0.5;
 	float tickOffset = 0;
 	int tx = 0; int ty = -1; int tz = 0;
+	int tx2 = 0; int ty2 = -1; int tz2 = 0;
+	PolyS mob;
+	boolean flag;
 
-	PolyS(float x, float y, float z, float ax, float ay, float az, float w, float[] vert, int[][] faces, String mode, float tick, float tickOffset) {
-		super(x,y,z,ax,ay,az,w,vert,faces);
-		this.gw = w*2; this.mode = mode; this.tick = tick; this.tickOffset = tickOffset; sca.x = 0;
+	PolyS reset(String[] modes, PolyTemp template, float x, float y, float z, float w, float tick, float tickOffset, int maxSteps) {
+		this.p.reset((int)(x*w),(int)(y*w),(int)(z*w));
+		this.pv.reset(0,0,0);
+		this.ang.reset(0,0,0);
+		this.av.reset(0,0,0);
+		this.w.reset(w/2,w/2,w/2);
+		this.sca.x = 0; this.sca.X = 1; this.sca.v = 0;
+		this.gw = w;
+		this.template = template;
+		this.modes = modes;
+		this.tick = tick;
+		this.tickOffset = tickOffset;
+		this.finished = false;
+		this.alive = true;
+		this.diePulse = true;
+		this.steps = 0;
+		this.maxSteps = maxSteps;
+		return this;
 	}
 
-	PolyS() {}
+	PolyS() {
+		for (int i = 0 ; i < fillStyle.length ; i ++) {
+			fillStyle[i] = new IColor();
+			strokeStyle[i] = new IColor();
+		}
+		p.mass = 25;
+		p.vMult = 0.9;
+	}
 
 	void update() {
-		super.update();
-		if (!alive) {
-			if (sca.x <= 0.03) {
+		p.update();
+		pv.update();
+		w.update();
+		ang.update();
+		av.update();
+		sca.update();
+		for (int i = 0 ; i < template.faces.length ; i ++) {
+			fillStyle[i].update();
+			strokeStyle[i].update();
+		}
+		if (!alive && sca.x < 0.03) {
 				finished = true;
-			}
-		} else if (beatQ && mode != "" && (currBeat+tickOffset) % tick == 0) {
+		} else if (beatQ && (currBeat+tickOffset) % tick == 0) {
 			tickUpdate();
+			steps ++;
+			if (steps == maxSteps) die();
 		}
 	}
 
 	void tickUpdate() {
-		switch(mode) {
-			case "source":
-			PolyS mob = parent.add(1,getx(),gety(),getz(), "line",tick,tickOffset,maxSteps);
-			mob.setT(tx,ty,tz);
-			break;
-			case "line":
-			addPT();
-			break;
+		for (String mode : modes) {
+			switch(mode) {
+				case "line":
+				addPT();
+				break;
+				case "flip":
+				if (steps % 2 == 0) {
+					addP(tx2,ty2,tz2);
+				} else {
+					addP(-tx2,-ty2,-tz2);
+				}
+				break;
+				case "flipAng":
+				addAng(tx2,ty2,tz2); 
+				break;
+				case "source":
+				mob = parent.add(mLine, template, getx(),gety(),getz(), tick,tickOffset,maxSteps);
+				mob.setT(tx2,ty2,tz2);
+				break;
+				case "sourceI":
+				if (af[index] > threshold) {
+					mob = parent.add(mLine, template, getx(),gety(),getz(), tick,tickOffset,maxSteps);
+					mob.setT(tx2,ty2,tz2);
+				}
+				break;
+			}
 		}
-		steps ++;
-		if (steps == maxSteps) die();
 	}
 
-	void setTick(String mode, float tick, float tickOffset) {
-		this.mode = mode;
+	void render() {
+		push();
+		translate(p.p.x,p.p.y,p.p.z);
+		rotateX(ang.p.x);
+		rotateY(ang.p.y);
+		rotateZ(ang.p.z);
+		scale(sca.x);
+		for (int i = 0 ; i < template.faces.length ; i ++) {
+			fillStyle[i].fillStyle();
+			strokeStyle[i].strokeStyle();
+			beginShape();
+			for (int k = 0 ; k < template.faces[i].length ; k ++) {
+				vertex(template.vert[template.faces[i][k]].p.x*w.p.x, template.vert[template.faces[i][k]].p.y*w.p.y, template.vert[template.faces[i][k]].p.z*w.p.z);
+			}
+			vertex(template.vert[template.faces[i][0]].p.x*w.p.x, template.vert[template.faces[i][0]].p.y*w.p.y, template.vert[template.faces[i][0]].p.z*w.p.z);
+			endShape();
+		}
+		pop();
+	}
+
+	void setTick(String[] modes, float tick, float tickOffset) {
+		this.modes = modes;
 		this.tick = tick;
 		this.tickOffset = tickOffset;
 	}
 
+	void setT(int tx, int ty, int tz, int tx2, int ty2, int tz2) {
+		this.tx = tx; this.ty = ty; this.tz = tz; this.tx2 = tx2; this.ty2 = ty2; this.tz2 = tz2;
+	}
+
+	void setT(int tx, int ty, int tz) {
+		setT(tx,ty,tz, tx,ty,tz);
+	}
+
 	void pulse(float amp) {
 		sca.v += amp;
-		parent.rings.add(0,this,0,w*3,amp);
+		parent.rings.add(0,this,0,gw*1.5,amp);
 	}
 
 	void die() {
 		sca.X = 0;
 		alive = false;
-		parent.rings.add(0,this,w*3);
+		float ax = 0; float ay = 0;
+		if (tx != 0) {
+			ay = PI/2;
+		} else if (ty != 0) {
+			ax = PI/2;
+		}
+		if (diePulse) parent.rings.add(0,this,p.p.x,p.p.y,p.p.z, ax,ay,0, 0,gw*1.5, 0.25);
 	}
 
 	void addAng(float x, float y, float z) {
 		ang.P.add((int)x*pi2,(int)y*pi2,(int)z*pi2);
-	}
-
-	void addRang(float x, float y, float z) {
-		rang.P.add((int)x*pi2,(int)y*pi2,(int)z*pi2);
 	}
 
 	void addP(float x, float y, float z) {
@@ -140,19 +176,9 @@ class PolyS extends Poly {
 		p.P.add(tx*gw,ty*gw,tz*gw);
 	}
 
-	void addR(float x, float y, float z) {
-		x = (int)x; y = (int)y; z = (int)z;
-		r.P.add(x*gw,y*gw,z*gw);
-	}
-
 	void setAng(float x, float y, float z) {
 		x = (int)x; y = (int)y; z = (int)z;
 		ang.P.set(x*pi2,y*pi2,z*pi2);
-	}
-
-	void setRang(float x, float y, float z) {
-		x = (int)x; y = (int)y; z = (int)z;
-		rang.P.set(x*pi2,y*pi2,z*pi2);
 	}
 
 	void setP(float x, float y, float z) {
@@ -160,24 +186,111 @@ class PolyS extends Poly {
 		p.P.set(x*gw,y*gw,z*gw);
 	}
 
-	void setT(float x, float y, float z) {
-		tx = (int)x; ty = (int)y; tz = (int)z;
-	}
-
-	void setR(float x, float y, float z) {
-		x = (int)x; y = (int)y; z = (int)z;
-		r.P.set(x*gw,y*gw,z*gw);
-	}
-
 	int getx() {
-		return (int)(p.p.x/gw);
+		if (abs(p.p.x) <= gw/2) return 0;
+		if (p.p.x > 0) return (int)(p.p.x/gw)+1;
+		return (int)(p.p.x/gw)-1;
 	}
 
 	int gety() {
-		return (int)(p.p.y/gw);
+		if (abs(p.p.y) <= gw/2) return 0;
+		if (p.p.y > 0) return (int)(p.p.y/gw)+1;
+		return (int)(p.p.y/gw)-1;
 	}
 
 	int getz() {
-		return (int)(p.p.z/gw);
+		if (abs(p.p.z) <= gw/2) return 0;
+		if (p.p.z > 0) return (int)(p.p.z/gw)+1;
+		return (int)(p.p.z/gw)-1;
+	}
+
+	void setFillStyle(float rc, float gc, float bc, float ac, float rcr, float gcr, float bcr, float acr, 
+	float rm, float gm, float bm, float am, float rmr, float gmr, float bmr, float amr, float index) {
+		setFillStyle(rc,gc,bc,ac,rcr,gcr,bcr,acr,rm,gm,bm,am,rmr,gmr,bmr,amr);
+		for (int i = 0 ; i < fillStyle.length ; i ++) {
+			fillStyle[i].index = (int)(index + i)%binCount;
+		}
+	}
+
+	void setFillStyle(float rc, float gc, float bc, float ac, float rcr, float gcr, float bcr, float acr, 
+	float rm, float gm, float bm, float am, float rmr, float gmr, float bmr, float amr) {
+		float t;
+		for (int i = 0 ; i < fillStyle.length ; i ++) {
+			t = (float)i/fillStyle.length;
+			fillStyle[i].set(rc+rcr*t, gc+gcr*t, bc+bcr*t, ac+acr*t, rm+rmr*t, gm+gmr*t, bm+bmr*t, am+amr*t);
+		}
+	}
+
+	void setStrokeStyle(float rc, float gc, float bc, float ac, float rcr, float gcr, float bcr, float acr, 
+	float rm, float gm, float bm, float am, float rmr, float gmr, float bmr, float amr, float index) {
+	setStrokeStyle(rc,gc,bc,ac,rcr,gcr,bcr,acr,rm,gm,bm,am,rmr,gmr,bmr,amr);
+		for (int i = 0 ; i < fillStyle.length ; i ++) {
+			strokeStyle[i].index = (int)(index + i)%binCount;
+		}
+	}
+
+	void setStrokeStyle(float rc, float gc, float bc, float ac, float rcr, float gcr, float bcr, float acr, 
+	float rm, float gm, float bm, float am, float rmr, float gmr, float bmr, float amr) {
+	float t;
+		for (int i = 0 ; i < fillStyle.length ; i ++) {
+			t = (float)i/fillStyle.length;
+			strokeStyle[i].set(rc+rcr*t, gc+gcr*t, bc+bcr*t, ac+acr*t, rm+rmr*t, gm+gmr*t, bm+bmr*t, am+amr*t);
+		}
+	}
+
+	void setIndex(float index) {
+		int i = (int)index%binCount;
+		index = i;
+		p.index = i;
+		w.index = i;
+		ang.index = i;
+		sca.index = i;
+		pv.index = i;
+		av.index = i;
+		for (int k = 0 ; k < fillStyle.length ; k ++) {
+			fillStyle[k].index = (i+k)%binCount;
+			strokeStyle[k].index = (i+k)%binCount;
+		}
 	}
 }
+
+class PolyTemp {
+	Point[] vert;
+	int[][] faces;
+
+	PolyTemp(float[] vert, int[][] faces) {
+		this.faces = faces;
+		this.vert = new Point[vert.length/3];
+		for (int i = 0 ; i < vert.length ; i += 3) {
+			this.vert[i/3] = new Point(vert[i],vert[i+1],vert[i+2]);
+		}
+	}
+}
+
+PolyTemp chooseTemp(float i) {
+	switch((int)i) {
+		case 0: return pyramid;
+		case 1: return cube;
+		case 2: return octohedron;
+		case 3: return crystal;
+		default: return cube;
+	}
+}
+
+PolyTemp randomTemp(PolyTemp[] ar) {
+	return ar[(int)random(ar.length)];
+}
+
+PolyTemp pyramid = new PolyTemp(new float[]{-1,-1,-1, 1,-1,-1, 1,1,-1, -1,1,-1, 0,0,1},
+	new int[][]{new int[]{0,1,2,3}, new int[]{0,1,4}, new int[]{1,2,4}, new int[]{2,3,4}, new int[]{3,0,4}});
+
+PolyTemp cube = new PolyTemp(new float[]{-1,-1,-1, 1,-1,-1, 1,1,-1, -1,1,-1, -1,-1,1, 1,-1,1, 1,1,1, -1,1,1},
+    new int[][]{new int[]{0,1,2,3}, new int[]{0,1,5,4}, new int[]{1,2,6,5}, new int[]{2,3,7,6}, new int[]{3,0,4,7}, new int[]{4,5,6,7}});
+
+PolyTemp crystal = new PolyTemp(new float[]{-1,-1,-1, 1,-1,-1, 1,1,-1, -1,1,-1, -1,-1,1, 1,-1,1, 1,1,1, -1,1,1, 0,2.5,0, 0,-2.5,0},
+      new int[][]{new int[]{0,1,2,3}, new int[]{0,1,5,4}, new int[]{1,2,6,5}, new int[]{2,3,7,6}, new int[]{3,0,4,7}, new int[]{4,5,6,7},
+      new int[]{9,0,1}, new int[]{9,1,5}, new int[]{9,4,5}, new int[]{9,4,0}});
+
+PolyTemp octohedron = new PolyTemp(new float[]{0,-1,0, -1,0,0, 0,0,1, 1,0,0, 0,0,-1, 0,1,0},
+      new int[][]{new int[]{0,1,2}, new int[]{0,2,3}, new int[]{0,3,4}, new int[]{0,4,1},
+      new int[]{5,1,2}, new int[]{5,2,3}, new int[]{5,3,4}, new int[]{5,4,1}});

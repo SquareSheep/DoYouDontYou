@@ -95,6 +95,6 @@ class RingPool extends ObjectPool<Ring> {
 	}
 
 	void add(int type, PolyS parent, float wMax) {
-		add(type, parent, parent.p.p.x,parent.p.p.y,parent.p.p.z, parent.ang.p.x,parent.ang.p.y,parent.ang.p.z, parent.w, wMax, 0.25);
+		add(type, parent, parent.p.p.x,parent.p.p.y,parent.p.p.z, parent.ang.p.x,parent.ang.p.y,parent.ang.p.z, parent.sca.x, wMax, 0.25);
 	}
 }
