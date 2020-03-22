@@ -26,9 +26,12 @@ String[] mSource = new String[]{"source","line"};
 String[] mSourceI = new String[]{"sourceI","line"};
 String[] mLine = new String[]{"line"};
 String[] mFlip = new String[]{"line","flip"};
-String[] mSwitch = new String[]{"flip","flipAng"};
+String[] mFlip2 = new String[]{"line","flip","flipAng"};
+String[] mSwitch = new String[]{"flip","flipAng","altTemp"};
 PolyTemp[] octoCube = new PolyTemp[]{octohedron,cube};
 PolyTemp[] octoMid = new PolyTemp[]{octohedron,pyramid};
+PolyTemp[] pyraCube = new PolyTemp[]{pyramid,cube};
+PolyTemp[] cubeCrystal = new PolyTemp[]{cube,crystal};
 
 
 void instantEvents() {
@@ -179,22 +182,90 @@ void instantEvents() {
 			box.setFillStyle(75,75,75, 100,-155,125, 1,1,1, 0,0,0);
 		}
 	} // "Whemm" melody
-	else if (beatInRange(297,331)) {
+	else if (beatInRange(297,400)) {
 		if (currBeat == 297) {
+			box.setW(5,5,7);
 			for (PolyS mob : box.par) mob.die();
 			for (PolyS mob : box2.par) mob.die();
-			for (int i = -box.gx ; i <= box.gx ; i += 2) box.add(mSwitch, cube, i,box.gy-1,-box.gz, 2,1, 16).setT(0,1,0);
-			for (int i = -box.gx ; i <= box.gx ; i += 2) box.add(mSwitch, cube, i,box.gy-1,box.gz, 2,1, 16).setT(0,1,0);
-			for (int i = -box.gz ; i <= box.gz ; i += 2) box.add(mSwitch, cube, -box.gx,box.gy-1,i, 2,1, 16).setT(0,1,0);
-			for (int i = -box.gz ; i <= box.gz ; i += 2) box.add(mSwitch, cube, box.gx,box.gy-1,i, 2,1, 16).setT(0,1,0);
-			for (int i = -box.gx + 1 ; i <= box.gx ; i += 2) box.add(mSwitch, cube, i,box.gy-1,-box.gz, 2,1, 16).setT(0,-1,0);
-			for (int i = -box.gx + 1 ; i <= box.gx ; i += 2) box.add(mSwitch, cube, i,box.gy-1,box.gz, 2,1, 16).setT(0,-1,0);
-			for (int i = -box.gz + 1 ; i <= box.gz ; i += 2) box.add(mSwitch, cube, -box.gx,box.gy-1,i, 2,1, 16).setT(0,-1,0);
-			for (int i = -box.gz + 1 ; i <= box.gz ; i += 2) box.add(mSwitch, cube, box.gx,box.gy-1,i, 2,1, 16).setT(0,-1,0);
+			ringY(mSwitch, cube, -box.gy+1,1, 2,1);
+			ringY(mSwitch, cube, box.gy-1,1, 2,1);
 		}
 		if (beatInRange(297,299.5) || beatInRange(301.5,303.5) || beatInRange(305,307.5) || beatInRange(309,311.5) ||
 			beatInRange(313,315.5) || beatInRange(317.5,319.5) || beatInRange(321,323.5) || beatInRange(325,327.5)) {
-			for (int o = 0 ; o < 3 ; o ++) box.add(mFlip, pyramid, random(-box.gx,box.gx),box.gy,random(-box.gz,box.gz), 0.25,0, 16).setT(0,-2,0, 1,0,0);
+			for (int o = 0 ; o < 3 ; o ++) {
+				x = random(-box.gx+1,box.gx-1);
+				z = random(-box.gz+1,box.gz-1);
+				box.add(mFlip, cube, x,0,z, 0.25,0, 16).setT(0,-2,0);
+				box.add(mFlip, cube, x-1,0,z, 0.25,0, 16).setT(0,-2,0);
+				box.add(mFlip, cube, x+1,0,z, 0.25,0, 16).setT(0,-2,0);
+				box.add(mFlip, cube, x,0,z-1, 0.25,0, 16).setT(0,-2,0);
+				box.add(mFlip, cube, x,0,z+1, 0.25,0, 16).setT(0,-2,0);
+
+				box.add(mFlip, cube, x,0,z, 0.25,0, 16).setT(0,2,0);
+				box.add(mFlip, cube, x-1,0,z, 0.25,0, 16).setT(0,2,0);
+				box.add(mFlip, cube, x+1,0,z, 0.25,0, 16).setT(0,2,0);
+				box.add(mFlip, cube, x,0,z-1, 0.25,0, 16).setT(0,2,0);
+				box.add(mFlip, cube, x,0,z+1, 0.25,0, 16).setT(0,2,0);
+			}
+		}
+		// 329
+		if (currBeat % 2 == 1 && beatInRange(329,361)) {
+			for (int i = -box.gx ; i <= box.gx ; i ++) box.add(mLine, cubeCrystal, i,-box.gy,-box.gz, 0.25,0, 16).setT(0,2,0);
+			for (int i = -box.gx ; i <= box.gx ; i ++) box.add(mLine, cubeCrystal, i,-box.gy,box.gz, 0.25,0, 16).setT(0,2,0);
+			for (int i = -box.gz ; i <= box.gz ; i ++) box.add(mLine, cubeCrystal, -box.gx,-box.gy,i, 0.25,0, 16).setT(0,2,0);
+			for (int i = -box.gz ; i <= box.gz ; i ++) box.add(mLine, cubeCrystal, box.gx,-box.gy,i, 0.25,0, 16).setT(0,2,0);
+			for (int i = -box.gx ; i <= box.gx ; i ++) box.add(mLine, cubeCrystal, i,box.gy,-box.gz, 0.25,0, 16).setT(0,-2,0);
+			for (int i = -box.gx ; i <= box.gx ; i ++) box.add(mLine, cubeCrystal, i,box.gy,box.gz, 0.25,0, 16).setT(0,-2,0);
+			for (int i = -box.gz ; i <= box.gz ; i ++) box.add(mLine, cubeCrystal, -box.gx,box.gy,i, 0.25,0, 16).setT(0,-2,0);
+			for (int i = -box.gz ; i <= box.gz ; i ++) box.add(mLine, cubeCrystal, box.gx,box.gy,i, 0.25,0, 16).setT(0,-2,0);
+		}
+		if (beatInRange(329,331.5) || beatInRange(333.5,335.5) || beatInRange(337,339.5) || beatInRange(341,343.5) ||
+			beatInRange(345,347.5) || beatInRange(349.5,351.5) || beatInRange(353,355.5) || beatInRange(357,359.5)) {
+			for (int o = 0 ; o < 3 ; o ++) {
+				x = random(-box.gx+1,box.gx-1);
+				z = random(-box.gz+1,box.gz-1);
+				box.add(mFlip2, cube, x,box.gy-1,z, 0.25,0, 16).setT(0,-2,0);
+
+				box.add(mFlip2, cube, x,box.gy-2,z, 0.25,0, 16).setT(0,-2,0);
+				box.add(mFlip2, cube, x,box.gy,z, 0.25,0, 16).setT(0,-2,0);
+
+				box.add(mFlip2, cube, x-1,box.gy-1,z, 0.25,0, 16).setT(0,-2,0);
+				box.add(mFlip2, cube, x+1,box.gy-1,z, 0.25,0, 16).setT(0,-2,0);
+				
+				box.add(mFlip2, cube, x,box.gy-1,z-1, 0.25,0, 16).setT(0,-2,0);
+				box.add(mFlip2, cube, x,box.gy-1,z+1, 0.25,0, 16).setT(0,-2,0);
+			}
+		}
+		if (currBeat % 1 == 0 && beatInRange(361,369)) {
+			ringY(mLine, cube, -box.gy,2, 0.25,0);
+			ringY(mLine, cube, box.gy,-2, 0.25,0);
+		}
+		if (currBeat % 1 == 0 && beatInRange(369,391)) {
+			ringZ(mLine, cube, -box.gz,2, 0.25,0);
+			ringZ(mLine, cube, box.gz,-2, 0.25,0);
+		}
+		if (currBeat == 361) {
+			for (PolyS mob : box.par) mob.die();
+			for (PolyS mob : box2.par) mob.die();
+			ringY(mSwitch, cube, -box.gy+1,1, 1,0);
+			ringY(mSwitch, cube, box.gy-1,1, 1,0);
+		}
+		if (beatInRange(361,363.5) || beatInRange(365.5,367.5) || beatInRange(369,371.5) || beatInRange(373,375.5) ||
+			beatInRange(377,379.5) || beatInRange(381.5,383.5) || beatInRange(385,387.5) || beatInRange(389,391.5)) {
+			for (int o = 0 ; o < 3 ; o ++) {
+				x = random(-box.gx+1,box.gx-1);
+				z = random(-box.gz+1,box.gz-1);
+				box.add(mFlip2, cube, x,box.gy-1,z, 0.25,0, 16).setT(0,-2,0);
+
+				box.add(mFlip2, cube, x,box.gy-2,z, 0.25,0, 16).setT(0,-2,0);
+				box.add(mFlip2, cube, x,box.gy,z, 0.25,0, 16).setT(0,-2,0);
+
+				box.add(mFlip2, cube, x-1,box.gy-1,z, 0.25,0, 16).setT(0,-2,0);
+				box.add(mFlip2, cube, x+1,box.gy-1,z, 0.25,0, 16).setT(0,-2,0);
+				
+				box.add(mFlip2, cube, x,box.gy-1,z-1, 0.25,0, 16).setT(0,-2,0);
+				box.add(mFlip2, cube, x,box.gy-1,z+1, 0.25,0, 16).setT(0,-2,0);
+			}
 		}
 		box.setFillStyle(155,155,155, 125,-125,125, 0,0,0, 2,2,2);
 		box2.setFillStyle(55,55,55, 125,-125,125, 0,0,0, 1,1,1);
@@ -212,13 +283,13 @@ void keyboardInput() {
 		setTime(136765,263.25);
 		break;
 		case '3':
-		setTime(153971,296.25);
+		setTime(153460,295.25);
 		break;
 		case '4':
-		setTime(0,0);
+		setTime(169644,326.25);
 		break;
 		case '5':
-		setTime(0,0);
+		setTime(186316,358.25);
 		break;
 		case '6':
 		setTime(0,0);

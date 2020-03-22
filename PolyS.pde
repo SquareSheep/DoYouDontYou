@@ -12,7 +12,6 @@ class PolyS extends Entity {
 	int index;
 	float threshold = 100;
 
-	
 	boolean alive = true;
 	boolean diePulse = true;
 	PolySBox parent;
@@ -27,6 +26,7 @@ class PolyS extends Entity {
 	int tx2 = 0; int ty2 = -1; int tz2 = 0;
 	PolyS mob;
 	boolean flag;
+	int id;
 
 	PolyS reset(String[] modes, PolyTemp template, float x, float y, float z, float w, float tick, float tickOffset, int maxSteps) {
 		this.p.reset((int)(x*w),(int)(y*w),(int)(z*w));
@@ -54,7 +54,7 @@ class PolyS extends Entity {
 			strokeStyle[i] = new IColor();
 		}
 		p.mass = 25;
-		p.vMult = 0.9;
+		p.vMult = 0.8;
 	}
 
 	void update() {
@@ -84,14 +84,18 @@ class PolyS extends Entity {
 				addPT();
 				break;
 				case "flip":
-				if (steps % 2 == 0) {
+				if ((steps+id) % 2 == 0) {
 					addP(tx2,ty2,tz2);
 				} else {
 					addP(-tx2,-ty2,-tz2);
 				}
 				break;
 				case "flipAng":
-				addAng(tx2,ty2,tz2); 
+				sca.x -= 0.5;
+				addAng(min(abs(tx2),1),min(abs(ty2),1),min(abs(tz2),1)); 
+				break;
+				case "altTemp":
+				template = templates[(int)(currBeat%6)%templates.length];
 				break;
 				case "source":
 				mob = parent.add(mLine, template, getx(),gety(),getz(), tick,tickOffset,maxSteps);
@@ -294,3 +298,5 @@ PolyTemp crystal = new PolyTemp(new float[]{-1,-1,-1, 1,-1,-1, 1,1,-1, -1,1,-1, 
 PolyTemp octohedron = new PolyTemp(new float[]{0,-1,0, -1,0,0, 0,0,1, 1,0,0, 0,0,-1, 0,1,0},
       new int[][]{new int[]{0,1,2}, new int[]{0,2,3}, new int[]{0,3,4}, new int[]{0,4,1},
       new int[]{5,1,2}, new int[]{5,2,3}, new int[]{5,3,4}, new int[]{5,4,1}});
+
+PolyTemp[] templates = new PolyTemp[]{pyramid,cube,octohedron};

@@ -1,3 +1,38 @@
+void ringX(String[] modes, PolyTemp template, int x, int vx, float tick, float offset) {
+	for (int i = -box.gz ; i <= box.gz ; i ++) box.add(modes, template, x,-box.gy,i, tick, offset, 16).setT(vx,0,0);
+	for (int i = -box.gz ; i <= box.gz ; i ++) box.add(modes, template, x,box.gy,i, tick, offset, 16).setT(vx,0,0);
+	for (int i = -box.gy ; i <= box.gy ; i ++) box.add(modes, template, x,i,z, tick, offset, 16).setT(vx,0,0);
+	for (int i = -box.gy ; i <= box.gy ; i ++) box.add(modes, template, x,i,z, tick, offset, 16).setT(vx,0,0);
+}
+
+void ringY(String[] modes, PolyTemp template, int y, int vy, float tick, float offset) {
+	for (int i = -box.gx ; i <= box.gx ; i ++) box.add(modes, template, i,y,-box.gz, tick, offset, 16).setT(0,vy,0);
+	for (int i = -box.gx ; i <= box.gx ; i ++) box.add(modes, template, i,y,box.gz, tick, offset, 16).setT(0,vy,0);
+	for (int i = -box.gz ; i <= box.gz ; i ++) box.add(modes, template, -box.gx,y,i, tick, offset, 16).setT(0,vy,0);
+	for (int i = -box.gz ; i <= box.gz ; i ++) box.add(modes, template, box.gx,y,i, tick, offset, 16).setT(0,vy,0);
+}
+
+void ringZ(String[] modes, PolyTemp template, int z, int vz, float tick, float offset) {
+	for (int i = -box.gx ; i <= box.gx ; i ++) box.add(modes, template, i,-box.gy,z, tick, offset, 16).setT(0,0,vz);
+	for (int i = -box.gx ; i <= box.gx ; i ++) box.add(modes, template, i,box.gy,z, tick, offset, 16).setT(0,0,vz);
+	for (int i = -box.gy ; i <= box.gy ; i ++) box.add(modes, template, -box.gx,i,z, tick, offset, 16).setT(0,0,vz);
+	for (int i = -box.gy ; i <= box.gy ; i ++) box.add(modes, template, box.gx,i,z, tick, offset, 16).setT(0,0,vz);
+}
+
+void ringX(String[] modes, PolyTemp[] template, int x, int vx, float tick, float offset) {
+	ringX(modes, template[(int)random(template.length)], x, vx, tick, offset);
+}
+
+void ringY(String[] modes, PolyTemp[] template, int y, int vy, float tick, float offset) {
+	ringY(modes, template[(int)random(template.length)], y, vy, tick, offset);
+}
+
+
+void ringZ(String[] modes, PolyTemp[] template, int z, int vz, float tick, float offset) {
+	ringZ(modes, template[(int)random(template.length)], z, vz, tick, offset);
+}
+
+
 class PointResetList extends Event {
 	Point[] ar;
 	float x,y,z,X,Y,Z;

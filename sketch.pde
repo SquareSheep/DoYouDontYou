@@ -10,7 +10,7 @@ static float fillVMult = 0.25;
 static float fftThreshold = 1.2;
 static float fftPow = 1.9;
 static float fftAmp = 3;
-static float volumeGain = -10;
+static float volumeGain = -30;
 static String songName = "../Music/doyoudontyou.mp3";
 
 IColor defaultFill = new IColor(0,0,0,0);

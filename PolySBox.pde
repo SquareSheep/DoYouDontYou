@@ -35,6 +35,7 @@ class PolySBox extends Entity {
 		y = (int)min(max(y,-gy),gy);
 		z = (int)min(max(z,-gz),gz);
 		mob.reset(modes, template, x,y,z, gw, tick, tickOffset, maxSteps);
+		mob.id = arm;
 		arm ++;
 		par.add(mob);
 		return mob;
@@ -94,6 +95,7 @@ class PolySBox extends Entity {
 			if (ar.get(i).finished) remove(i);
 		}
 		rings.update();
+		w.update();
 		gx = (int)(w.p.x/gw);
 		gy = (int)(w.p.y/gw);
 		gz = (int)(w.p.z/gw);
