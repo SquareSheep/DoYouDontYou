@@ -1,35 +1,63 @@
-void ringX(String[] modes, PolyTemp template, int x, int vx, float tick, float offset) {
-	for (int i = -box.gz ; i <= box.gz ; i ++) box.add(modes, template, x,-box.gy,i, tick, offset, 16).setT(vx,0,0);
-	for (int i = -box.gz ; i <= box.gz ; i ++) box.add(modes, template, x,box.gy,i, tick, offset, 16).setT(vx,0,0);
-	for (int i = -box.gy ; i <= box.gy ; i ++) box.add(modes, template, x,i,z, tick, offset, 16).setT(vx,0,0);
-	for (int i = -box.gy ; i <= box.gy ; i ++) box.add(modes, template, x,i,z, tick, offset, 16).setT(vx,0,0);
+void carpetX(String[] modes, PolyTemp[] template, int x, int y, int vx, int vy, float tick, float offset) {
+	for (int i = -box.gz ; i <= box.gz ; i ++) {
+		box.add(modes, template, x,y,i, tick,offset, 16).setT(vx,vy,0).diePulse = false;
+	}
 }
 
-void ringY(String[] modes, PolyTemp template, int y, int vy, float tick, float offset) {
-	for (int i = -box.gx ; i <= box.gx ; i ++) box.add(modes, template, i,y,-box.gz, tick, offset, 16).setT(0,vy,0);
-	for (int i = -box.gx ; i <= box.gx ; i ++) box.add(modes, template, i,y,box.gz, tick, offset, 16).setT(0,vy,0);
-	for (int i = -box.gz ; i <= box.gz ; i ++) box.add(modes, template, -box.gx,y,i, tick, offset, 16).setT(0,vy,0);
-	for (int i = -box.gz ; i <= box.gz ; i ++) box.add(modes, template, box.gx,y,i, tick, offset, 16).setT(0,vy,0);
+void carpetZ(String[] modes, PolyTemp[] template, int z, int y, int vz, int vy, float tick, float offset) {
+	for (int i = -box.gx ; i <= box.gx ; i ++) {
+		box.add(modes, template, i,y,z, tick,offset, 16).setT(0,vy,vz).diePulse = false;
+	}
 }
 
-void ringZ(String[] modes, PolyTemp template, int z, int vz, float tick, float offset) {
-	for (int i = -box.gx ; i <= box.gx ; i ++) box.add(modes, template, i,-box.gy,z, tick, offset, 16).setT(0,0,vz);
-	for (int i = -box.gx ; i <= box.gx ; i ++) box.add(modes, template, i,box.gy,z, tick, offset, 16).setT(0,0,vz);
-	for (int i = -box.gy ; i <= box.gy ; i ++) box.add(modes, template, -box.gx,i,z, tick, offset, 16).setT(0,0,vz);
-	for (int i = -box.gy ; i <= box.gy ; i ++) box.add(modes, template, box.gx,i,z, tick, offset, 16).setT(0,0,vz);
+void carpetX(String[] modes, PolyTemp[] template, int x, int y, int vx, float tick, float offset) {
+	carpetX(modes, template, x,y,vx,0, tick,offset);
+}
+
+void carpetZ(String[] modes, PolyTemp[] template, int z, int y, int vz, float tick, float offset) {
+	carpetZ(modes, template, z,y,vz,0, tick,offset);
+}
+
+void gridY(String[] modes, PolyTemp[] template, int y, int vy, float tick, float offset, int steps) {
+	for (int i = -box.gx ; i <= box.gx ; i ++) {
+		for (int k = -box.gz ; k <= box.gz ; k ++) {
+			box.add(modes, template, i,y, k, tick, offset, steps).setT(0,vy,0);
+		}
+	}
+}
+
+void ringX(String[] modes, PolyTemp[] template, int x, int vx, float tick, float offset, int steps) {
+	for (int i = -box.gz ; i <= box.gz ; i ++) box.add(modes, template, x,-box.gy,i, tick, offset, steps).setT(vx,0,0);
+	for (int i = -box.gz ; i <= box.gz ; i ++) box.add(modes, template, x,box.gy,i, tick, offset, steps).setT(vx,0,0);
+	for (int i = -box.gy ; i <= box.gy ; i ++) box.add(modes, template, x,i,-box.gz, tick, offset, steps).setT(vx,0,0);
+	for (int i = -box.gy ; i <= box.gy ; i ++) box.add(modes, template, x,i,box.gz, tick, offset, steps).setT(vx,0,0);
+}
+
+void ringY(String[] modes, PolyTemp[] template, int y, int vy, float tick, float offset, int steps) {
+	for (int i = -box.gx ; i <= box.gx ; i ++) box.add(modes, template, i,y,-box.gz, tick, offset, steps).setT(0,vy,0);
+	for (int i = -box.gx ; i <= box.gx ; i ++) box.add(modes, template, i,y,box.gz, tick, offset, steps).setT(0,vy,0);
+	for (int i = -box.gz ; i <= box.gz ; i ++) box.add(modes, template, -box.gx,y,i, tick, offset, steps).setT(0,vy,0);
+	for (int i = -box.gz ; i <= box.gz ; i ++) box.add(modes, template, box.gx,y,i, tick, offset, steps).setT(0,vy,0);
+}
+
+void ringZ(String[] modes, PolyTemp[] template, int z, int vz, float tick, float offset, int steps) {
+	for (int i = -box.gx ; i <= box.gx ; i ++) box.add(modes, template, i,-box.gy,z, tick, offset, steps).setT(0,0,vz);
+	for (int i = -box.gx ; i <= box.gx ; i ++) box.add(modes, template, i,box.gy,z, tick, offset, steps).setT(0,0,vz);
+	for (int i = -box.gy ; i <= box.gy ; i ++) box.add(modes, template, -box.gx,i,z, tick, offset, steps).setT(0,0,vz);
+	for (int i = -box.gy ; i <= box.gy ; i ++) box.add(modes, template, box.gx,i,z, tick, offset, steps).setT(0,0,vz);
 }
 
 void ringX(String[] modes, PolyTemp[] template, int x, int vx, float tick, float offset) {
-	ringX(modes, template[(int)random(template.length)], x, vx, tick, offset);
+	ringX(modes, template, x, vx, tick, offset, 16);
 }
 
 void ringY(String[] modes, PolyTemp[] template, int y, int vy, float tick, float offset) {
-	ringY(modes, template[(int)random(template.length)], y, vy, tick, offset);
+	ringY(modes, template, y, vy, tick, offset, 16);
 }
 
 
 void ringZ(String[] modes, PolyTemp[] template, int z, int vz, float tick, float offset) {
-	ringZ(modes, template[(int)random(template.length)], z, vz, tick, offset);
+	ringZ(modes, template, z, vz, tick, offset, 16);
 }
 
 

@@ -14,6 +14,7 @@ class PolyS extends Entity {
 
 	boolean alive = true;
 	boolean diePulse = true;
+	boolean checkBorders = true;
 	PolySBox parent;
 	PolyTemp template;
 
@@ -101,12 +102,6 @@ class PolyS extends Entity {
 				mob = parent.add(mLine, template, getx(),gety(),getz(), tick,tickOffset,maxSteps);
 				mob.setT(tx2,ty2,tz2);
 				break;
-				case "sourceI":
-				if (af[index] > threshold) {
-					mob = parent.add(mLine, template, getx(),gety(),getz(), tick,tickOffset,maxSteps);
-					mob.setT(tx2,ty2,tz2);
-				}
-				break;
 			}
 		}
 	}
@@ -131,18 +126,21 @@ class PolyS extends Entity {
 		pop();
 	}
 
-	void setTick(String[] modes, float tick, float tickOffset) {
+	PolyS setTick(String[] modes, float tick, float tickOffset) {
 		this.modes = modes;
 		this.tick = tick;
 		this.tickOffset = tickOffset;
+		return this;
 	}
 
-	void setT(int tx, int ty, int tz, int tx2, int ty2, int tz2) {
+	PolyS setT(int tx, int ty, int tz, int tx2, int ty2, int tz2) {
 		this.tx = tx; this.ty = ty; this.tz = tz; this.tx2 = tx2; this.ty2 = ty2; this.tz2 = tz2;
+		return this;
 	}
 
-	void setT(int tx, int ty, int tz) {
+	PolyS setT(int tx, int ty, int tz) {
 		setT(tx,ty,tz, tx,ty,tz);
+		return this;
 	}
 
 	void pulse(float amp) {
@@ -151,7 +149,7 @@ class PolyS extends Entity {
 	}
 
 	void die() {
-		sca.X = 0;
+		sca.X = -0.1;
 		alive = false;
 		float ax = 0; float ay = 0;
 		if (tx != 0) {
@@ -285,7 +283,7 @@ PolyTemp randomTemp(PolyTemp[] ar) {
 	return ar[(int)random(ar.length)];
 }
 
-PolyTemp pyramid = new PolyTemp(new float[]{-1,-1,-1, 1,-1,-1, 1,1,-1, -1,1,-1, 0,0,1},
+PolyTemp pyramid = new PolyTemp(new float[]{-1,1,-1, 1,1,-1, 1,1,1, -1,1,1, 0,-1,0},
 	new int[][]{new int[]{0,1,2,3}, new int[]{0,1,4}, new int[]{1,2,4}, new int[]{2,3,4}, new int[]{3,0,4}});
 
 PolyTemp cube = new PolyTemp(new float[]{-1,-1,-1, 1,-1,-1, 1,1,-1, -1,1,-1, -1,-1,1, 1,-1,1, 1,1,1, -1,1,1},
