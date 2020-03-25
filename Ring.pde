@@ -42,9 +42,10 @@ class Ring extends Entity {
 			rect(0,0,w.x,w.x);
 			break;
 			case 1:
-			fillStyle.fillStyle();
-			noStroke();
-			rect(0,0,wMax-w.x,wMax-w.x);
+			fillStyle.strokeStyle();
+			noFill();
+			strokeWeight((wMax*ringWThreshold-w.x)*amp);
+			box(w.x);
 			break;
 			case 2:
 			fillStyle.fillStyle();
@@ -71,19 +72,24 @@ class RingPool extends ObjectPool<Ring> {
 		mob.finished = false;
 	}
 
+	Ring add(int type, float x, float y, float z, float ax, float ay, float az, float w, float wMax, float amp) {
+		if (arm == ar.size()) {
+			ar.add(new Ring());
+		}
+		Ring mob = ar.get(arm);
+		set(mob,type,x,y,z,ax,ay,az,w,wMax,amp);
+		arm ++;
+		return mob;
+	}
+
 	void add(int type, PolyS parent, float x, float y, float z, float ax, float ay, float az, float w, float wMax, float amp) {
 		if (arm == ar.size()) {
 			ar.add(new Ring());
 		}
 		Ring mob = ar.get(arm);
 		set(mob,type,x,y,z,ax,ay,az,w,wMax,amp);
-		if (parent.strokeStyle[0].a.x > parent.fillStyle[0].a.x) {
-			mob.fillStyle.reset(parent.strokeStyle[0]);
-		} else {
-			mob.fillStyle.reset(parent.fillStyle[0]);
-			
-		}
-	arm ++;
+		mob.fillStyle.reset(parent.strokeStyle[0]);
+		arm ++;
 	}
 
 	void add(int type, PolyS parent, float w, float wMax, float amp) {

@@ -1,28 +1,26 @@
-class PolySBox extends Entity {
+class PolySBox extends Mob {
 	ArrayList<PolyS> ar = new ArrayList<PolyS>();
 	int arm = 0;
 	ArrayList<PolyS> par = new ArrayList<PolyS>();
 	RingPool rings = new RingPool();
-	Point p;
-	Point w;
-	Point ang;
 	int gx; int gy; int gz;
 	float gw;
 	boolean checkBorders = true;
 	boolean dieBorders = true;
-	boolean drawBorders = true;
+	boolean drawBorders = false;
 
 	boolean flag;
 
 	PolySBox(int x, int y, int z, int wx, int wy, int wz, float gw) {
 		p = new Point(x*gw,y*gw,z*gw);
 		ang = new Point();
-		w = new Point(wx*gw,wx*gw,wz*gw);
+		w = new Point(wx*gw,wy*gw,wz*gw);
 		gx = wx; gy = wx; gz = wz;
 		this.gw = gw;
 	}
 
 	void update() {
+		super.update();
 		for (int i = arm - 1 ; i >= 0 ; i --) {
 			ar.get(i).update();
 		}
@@ -30,7 +28,6 @@ class PolySBox extends Entity {
 			if (ar.get(i).finished) remove(i);
 		}
 		rings.update();
-		w.update();
 		gx = (int)(w.p.x/gw);
 		gy = (int)(w.p.y/gw);
 		gz = (int)(w.p.z/gw);
@@ -64,8 +61,13 @@ class PolySBox extends Entity {
 	}
 
 	void pulse(float amp) {
+		pulse(amp, 0,box.w.p.x*2);
+	}
+
+	void pulse(float amp, float minDist, float maxDist) {
 		for (PolyS mob : par) {
 			temp = sqrt(mob.p.p.x*mob.p.p.x+mob.p.p.y*mob.p.p.y+mob.p.p.z*mob.p.p.z);
+			if (temp < minDist || temp > maxDist) continue;
 			if (mob.p.p.x != 0) {
 				x = -(mob.p.p.x)/temp;
 			} else {
@@ -131,22 +133,67 @@ class PolySBox extends Entity {
 		w.P.set(gw*(int)x, gw*(int)y, gw*(int)z);
 	}
 
-	void setFillStyle(float rc, float gc, float bc, float rcr, float gcr, float bcr, 
-		float rm, float gm, float bm, float rmr, float gmr, float bmr) {
+	void backAdd(int wall, int type, float x, float y, float W, float wMax, float amp, float r, float g, float b) {
+		float bw = w.p.x*0.5;
+		Ring mob;
+		switch (wall) {	
+			default:
+			mob = rings.add(type, x,y,-bw, 0,0,0, W, wMax, amp);
+		}
+		mob.fillStyle.reset(r,g,b,255);
+	}
+
+	void setFillStyle(int mode, float rc, float gc, float bc, float rcr, float gcr, float bcr) {
 		float x,y,z,t;
+		temp = (float)frameCount/15;
+		float amp = 0.007;
+		float sAmp = 0.1;
+		float fAmp = 0.9;
 		for (int i = 0 ; i < arm ; i ++) {
 			PolyS mob = ar.get(i);
 			t = (float)i/arm-0.5;
-			x2 = mob.p.p.x/w.p.x;
-			y2 = mob.p.p.y/w.p.y;
-			z2 = mob.p.p.z/w.p.z;
-			x = (x2+y2);
-			y = (y2+z2);
-			z = (z2+x2);
-			mob.setStrokeStyle(rc+t*rcr,gc+t*gcr,bc+t*bcr,255, rcr,gcr,bcr,0, rm+t*rmr,gm+t*gmr,bm+t*bmr,0, rmr,gmr,bmr,0);
-			mob.setFillStyle((rc+t*rcr)*0.5,(gc+t*gcr)*0.5,(bc+t*bcr)*0.5,175, rcr,gcr,bcr,0, rm+t*rmr,gm+t*gmr,bm+t*bmr,1, rmr,gmr,bmr,0);
-			// mob.setStrokeStyle(rc+x*rcr,gc+y*gcr,bc+z*bcr,255, rcr,gcr,bcr,0, rm+x*rmr,gm+y*gmr,bm+z*bmr,0, rmr,gmr,bmr,0);
-			// mob.setFillStyle((rc+x*rcr)*0.5,(gc+y*gcr)*0.5,(bc+z*bcr)*0.5,175, rcr,gcr,bcr,0, rm+x*rmr,gm+y*gmr,bm+z*bmr,1, rmr,gmr,bmr,0);
+			x2 = mob.p.p.x/w.p.x*(noise(temp)*2+0.25);
+			y2 = mob.p.p.y/w.p.y*(noise(temp*1.2)*2+0.25);
+			z2 = mob.p.p.z/w.p.z*(noise(temp*0.9)*2+0.25);
+			switch(mode) {
+				case 0:
+				x = (x2+y2); y = (y2+z2); z = (z2+x2);
+				break;
+				case 1:
+				y = (x2+y2); z = (y2+z2); x = (z2+x2);
+				break;
+				case 2:
+				z = (x2+y2); x = (y2+z2); y = (z2+x2);
+				break;
+				default:
+				x = (x2+y2); y = (y2+z2); z = (z2+x2);
+				break;	
+			}
+			
+			mob.setStrokeStyle((rc+x*rcr)*sAmp,(gc+y*gcr)*sAmp,(bc+z*bcr)*sAmp,255, rcr,gcr,bcr,0, rc*amp,gc*amp,bc*amp,0, x*amp,y*amp,z*amp,0);
+			mob.setFillStyle((rc+x*rcr)*fAmp,(gc+y*gcr)*fAmp,(bc+z*bcr)*fAmp,155, rcr,gcr,bcr,0, rc*amp,gc*amp,bc*amp,1, x*amp,y*amp,z*amp,0);
+		}
+		for (int i = 0 ; i < rings.arm ; i ++) {
+			Ring mob = rings.ar.get(i);
+			t = (float)i/arm-0.5;
+			x2 = mob.p.p.x/w.p.x*(noise(temp)*2);
+			y2 = mob.p.p.y/w.p.y*(noise(temp*1.2)*2);
+			z2 = mob.p.p.z/w.p.z*(noise(temp*0.9)*2);
+			switch(mode) {
+				case 0:
+				x = (x2+y2); y = (y2+z2); z = (z2+x2);
+				break;
+				case 1:
+				y = (x2+y2); z = (y2+z2); x = (z2+x2);
+				break;
+				case 2:
+				z = (x2+y2); x = (y2+z2); y = (z2+x2);
+				break;
+				default:
+				x = (x2+y2); y = (y2+z2); z = (z2+x2);
+				break;	
+			}
+			mob.fillStyle.setC((rc+x*rcr)*fAmp,(gc+y*gcr)*fAmp,(bc+z*bcr)*fAmp,255);
 		}
 	}
 

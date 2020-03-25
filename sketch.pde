@@ -5,12 +5,12 @@ static int offset = -100;
 static int binCount = 144;
 static float defaultMass = 6;
 static float defaultVMult = 0.1;
-static float fillMass = 5;
-static float fillVMult = 0.25;
+static float fillMass = 6;
+static float fillVMult = 0.1;
 static float fftThreshold = 1.2;
 static float fftPow = 1.9;
 static float fftAmp = 3;
-static float volumeGain = -30;
+static float volumeGain = -9;
 static String songName = "../Music/doyoudontyou.mp3";
 
 IColor defaultFill = new IColor(0,0,0,0);
@@ -68,20 +68,27 @@ void render() {
 	if (beatQ) {
 		instantEvents();
 	}
+	push();
+	rotateX(box.ang.p.x);
+	rotateY(box.ang.p.y);
+	rotateZ(box.ang.p.z);
+	fill(10,15,40);
+	box(de*5,de*2.5,de*5);
+	pop();
 }
 
 void setSketch() {
 	front = new PVector(de*2,de,de*0.2);
 	back = new PVector(-de*2,-de,-de*2);
-	strokeWeight(4);
+	strokeWeight(2);
 
-	box = new PolySBox(0,0,0, 5,5,5, de*0.13);
+	box = new PolySBox(0,0,0, 6,4,6, de*0.14);
 	ar = box.ar;
 	mobs.add(box);
 
-	box2 = new PolySBox(0,0,0, 5,5,5, de*0.13);
-	ar2 = box2.ar;
-	mobs.add(box2);
+	// box2 = new PolySBox(0,0,0, 5,5,5, de*0.13);
+	// ar2 = box2.ar;
+	// mobs.add(box2);
 
-	setTime(103886,200.25);
+	setTime(102330,197.25);
 }

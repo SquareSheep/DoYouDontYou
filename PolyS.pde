@@ -1,4 +1,6 @@
 float pi2 = PI/2;
+float polySPMass = 25;
+float polySPVMult = 0.8;
 class PolyS extends Entity {
 	Point p = new Point();
 	Point pv = new Point();
@@ -46,6 +48,9 @@ class PolyS extends Entity {
 		this.diePulse = true;
 		this.steps = 0;
 		this.maxSteps = maxSteps;
+		p.mass = polySPMass;
+		p.vMult = polySPVMult;
+		pulse(1);
 		return this;
 	}
 
@@ -54,8 +59,6 @@ class PolyS extends Entity {
 			fillStyle[i] = new IColor();
 			strokeStyle[i] = new IColor();
 		}
-		p.mass = 25;
-		p.vMult = 0.8;
 	}
 
 	void update() {
@@ -89,6 +92,22 @@ class PolyS extends Entity {
 					addP(tx2,ty2,tz2);
 				} else {
 					addP(-tx2,-ty2,-tz2);
+				}
+				break;
+				case "flip2":
+				switch ((steps+id) % 4) {
+					case 0:
+					addP(tx2,ty2,tz2);
+					break;
+					case 1:
+					addP(tx,ty,tz);
+					break;
+					case 2:
+					addP(-tx2,-ty2,-tz2);
+					break;
+					case 3:
+					addP(-tx,-ty,-tz);
+					break;
 				}
 				break;
 				case "flipAng":
@@ -143,21 +162,20 @@ class PolyS extends Entity {
 		return this;
 	}
 
-	void pulse(float amp) {
-		sca.v += amp;
-		parent.rings.add(0,this,0,gw*1.5,amp);
-	}
-
-	void die() {
-		sca.X = -0.1;
-		alive = false;
+	void pulse(int type) {
 		float ax = 0; float ay = 0;
 		if (tx != 0) {
 			ay = PI/2;
 		} else if (ty != 0) {
 			ax = PI/2;
 		}
-		if (diePulse) parent.rings.add(0,this,p.p.x,p.p.y,p.p.z, ax,ay,0, 0,gw*1.5, 0.25);
+		parent.rings.add(type,this, p.p.x,p.p.y,p.p.z, ax,ay,0, 0,gw, 0.25);
+	}
+
+	void die() {
+		sca.X = -0.1;
+		alive = false;
+		if (diePulse) pulse(0);
 	}
 
 	void addAng(float x, float y, float z) {
@@ -189,19 +207,19 @@ class PolyS extends Entity {
 	}
 
 	int getx() {
-		if (abs(p.p.x) <= gw/2) return 0;
+		if (abs(p.p.x) < gw/3) return 0;
 		if (p.p.x > 0) return (int)(p.p.x/gw)+1;
 		return (int)(p.p.x/gw)-1;
 	}
 
 	int gety() {
-		if (abs(p.p.y) <= gw/2) return 0;
+		if (abs(p.p.y) < gw/3) return 0;
 		if (p.p.y > 0) return (int)(p.p.y/gw)+1;
 		return (int)(p.p.y/gw)-1;
 	}
 
 	int getz() {
-		if (abs(p.p.z) <= gw/2) return 0;
+		if (abs(p.p.z) < gw/3) return 0;
 		if (p.p.z > 0) return (int)(p.p.z/gw)+1;
 		return (int)(p.p.z/gw)-1;
 	}

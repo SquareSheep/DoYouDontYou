@@ -37,12 +37,12 @@ boolean beatQ = false;
 float temp, x,y,z, x2,y2,z2, w,d, tick, r,g,b,a, i,j,k,o,t, amp,wAmp,aAmp,vAmp,fAmp,sAmp;
 
 void setup() {
-  size(1100,1100,P3D);
+  size(1289,729,P3D);
   de = (int)(width*0.5+height*0.5);
   front = new PVector(de*2,de,de*0.2);
   back = new PVector(-de*2,-de,-de*2);
 
-  cam = new Camera(width*0.5,height*0.3,-de*1.5, 0,0,0);
+  cam = new Camera(width*0.5,height*0.3,-de*1.6, -0.1,0,0);
 
   textSize(de/10);
   rectMode(CENTER);
@@ -64,7 +64,11 @@ void setup() {
 
 void draw() {
   if (timer.beat) println(song.position() + "," + (int)(currBeat+1));
-  background(0);
+  //b = noise((float)frameCount/255)*25+25;
+  //r = max(noise((float)frameCount/255)*55-b,0);
+  //g = max(noise((float)frameCount/333+500)*55-b,0);
+  
+  //background(r,g,b);
   cam.render();
   update();
 
